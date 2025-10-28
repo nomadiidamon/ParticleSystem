@@ -17,7 +17,6 @@ file(GLOB_RECURSE SOURCE_FILES CONFIGURE_DEPENDS
 	./Dependencies/gateware-main-25.286.16/Gateware.h
 	./Dependencies/entt-3.13.1/single_include/entt/entt.hpp
 	./Dependencies/json/*.hpp
-	./Dependencies/tinyGLTF/*.h
 )
 
 # force unicode in some libraries on win32

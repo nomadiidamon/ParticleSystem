@@ -1,5 +1,4 @@
 #include <iostream>
-#include "precompiled.h"
 #include "App/App.h"
 
 int main()
