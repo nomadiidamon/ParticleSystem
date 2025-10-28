@@ -38,9 +38,9 @@ App::App(std::function< int()> _desktopMainFunction)
 
 			// main app loop
 			//Renderer renderer(win, vulkan);
-			while (+win.ProcessWindowEvents() && m_state != APP_EXIT)
+			while (+win.ProcessWindowEvents())
 			{
-				if (+vulkan.StartFrame(2, clrAndDepth) && m_state == APP_RUNNING)
+				if (+vulkan.StartFrame(2, clrAndDepth))
 				{
 					//renderer.Render();
 					Run();
