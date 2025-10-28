@@ -27,13 +27,7 @@ float4x4 CreateZRotation(float angle)
 float4 main(VERTEX inputVertex : POSITION,
 uint matrix_index : SV_InstanceID) : SV_POSITION
 {
-    // Create a rotation matrix for this frame
-    float4x4 rot = CreateZRotation(rotationAmount);
-
-    // Rotate vertex in object space
-    float4 rotatedVertex = mul(rot, inputVertex.pos);
     
-    // Apply world, view, and projection transforms
     float4 retval = mul((myWorldMatrix[matrix_index]), inputVertex.pos);
     retval = mul((myViewMatrix), retval);
     retval = mul((myProjectionMatrix), retval);
