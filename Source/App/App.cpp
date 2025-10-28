@@ -8,7 +8,6 @@ App::App()
 			return 0;
 		})) {
 
-			std::cout << "GApp created successfully." << std::endl;
 
 		// main app loop
 		while (m_state != APP_EXIT)
@@ -30,6 +29,7 @@ App::~App()
 // Any app-wide logic goes here
 int App::Run()
 {
+			std::cout << "GApp created successfully." << std::endl;
 	return 0;
 }
 
