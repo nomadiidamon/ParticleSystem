@@ -10,6 +10,9 @@ int main()
 	GWindow win;
 	GEventResponder msgs;
 	GVulkanSurface vulkan;
+	GW::INPUT::GInput input;
+	input.Create(win);
+
 	if (+win.Create(0, 0, 800, 600, GWindowStyle::WINDOWEDBORDERED))
 	{
 		// TODO: Part 1a
@@ -41,15 +44,16 @@ int main()
 		if (+vulkan.Create(win, GW::GRAPHICS::DEPTH_BUFFER_SUPPORT))
 #endif
 		{
+
 			//Renderer renderer(win, vulkan);
-			//while (+win.ProcessWindowEvents())
-			//{
-			//	if (+vulkan.StartFrame(2, clrAndDepth))
-			//	{
-			//		renderer.Render();
-			//		vulkan.EndFrame(true);
-			//	}
-			//}
+			while (+win.ProcessWindowEvents())
+			{
+				if (+vulkan.StartFrame(2, clrAndDepth))
+				{
+					//renderer.Render();
+					vulkan.EndFrame(true);
+				}
+			}
 		}
 	}
 	return 0; // that's all folks
