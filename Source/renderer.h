@@ -830,7 +830,7 @@ public:
 		instanceData.myWorldMatrix[5] = worldMatrixSix;
 		instanceData.myViewMatrix = viewMatrix;
 		instanceData.myProjectionMatrix = leftHandProjMatrix;
-		instanceData.rotationAmount += 0.01f;
+		instanceData.rotationAmount += 0.01f * 1.0f;
 		 
 		
 		// TODO: Part 2i // TODO: Part 4y
