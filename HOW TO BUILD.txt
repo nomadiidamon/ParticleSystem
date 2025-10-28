@@ -1,9 +1,11 @@
 This folder shows how to setup a 3D application purely with the EnTT ECS.
-To build this project you need to install CMake and have the Vulkan SDK.
+To build this project you need to install CMake, wxWidgets, and have the Vulkan SDK.
+Ensure that there is a system environment variable "WXWIN" pointing to your wxWidgets root install directory.
 
 Software: 
 https://CMake.org
 https://www.lunarg.com/vulkan-sdk/
+https://wxwidgets.org/downloads/
 
 After installing reboot your machine and run: "cmake -S ./ -B ./build"
 in a command prompt located in this folder. The .sln will be in the build folder.
