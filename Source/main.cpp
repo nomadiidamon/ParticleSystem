@@ -10,15 +10,12 @@ int main()
 	GWindow win;
 	GEventResponder msgs;
 	GVulkanSurface vulkan;
-	GW::INPUT::GInput input;
-	input.Create(win);
 
 	if (+win.Create(0, 0, 800, 600, GWindowStyle::WINDOWEDBORDERED))
 	{
-		// TODO: Part 1a
 		VkClearValue clrAndDepth[2];
 		clrAndDepth[0].color = { {0.025f, 0.095f, 0.155f, 0.25f} };
-		clrAndDepth[1].depthStencil = { 1.0f, 0u }; win.SetWindowName("Damon Green - Lab 4 - Vulkan Part 3 Complete");
+		clrAndDepth[1].depthStencil = { 1.0f, 0u }; win.SetWindowName("Particle System");
 		msgs.Create([&](const GW::GEvent& e) {
 			GW::SYSTEM::GWindow::Events q;
 			if (+e.Read(q) && q == GWindow::Events::RESIZE)
