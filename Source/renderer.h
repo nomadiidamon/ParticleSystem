@@ -814,7 +814,8 @@ public:
 		// TODO: Part 4x
 		unsigned int currentBuffer = 0;
 		vlk.GetSwapchainCurrentImage(currentBuffer);
-		instanceData.myViewMatrix = FreeLookCamera(win, instanceData.myViewMatrix);
+		//instanceData.myViewMatrix = FreeLookCamera(win, instanceData.myViewMatrix);
+		instanceData.myViewMatrix = viewMatrix;
 		GvkHelper::write_to_buffer(device, uniformBufferData[currentBuffer], &instanceData, sizeof(SHADER_VARS));
 
 		SetUpPipeline(commandBuffer);
