@@ -40,7 +40,9 @@ enum AppUpdateStatus : uint8_t
 
 class App
 {
-
+	GWindow win;
+	GEventResponder msgs;
+	GVulkanSurface vulkan;
 	GW::SYSTEM::GApp m_app;
 	AppState m_state = APP_RUNNING;
 	AppUpdateStatus m_updateStatus = APP_UPDATE_OK;

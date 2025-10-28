@@ -2,7 +2,7 @@
 #include "precompiled.h"
 #include "App/App.h"
 
-int AppCycle()
+int AppCycle(GWindow &_win)
 {
 	GWindow win;
 	GEventResponder msgs;
@@ -57,7 +57,7 @@ int main()
 {
 	std::cout << "Hello, World!\n" << std::endl;
 
-	App app(AppCycle);
+	App app();
 
 	return -1; // failed to create Gateware application
 }
