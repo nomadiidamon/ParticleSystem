@@ -22,6 +22,11 @@
 #define GATEWARE_DISABLE_GDIRECTX11SURFACE
 #define GATEWARE_DISABLE_GDIRECTX12SURFACE
 #include "../Dependencies/gateware-main-25.286.16/Gateware.h"
+using namespace GW;
+using namespace CORE;
+using namespace SYSTEM;
+using namespace GRAPHICS;
+
 
 
 /// wxWidgets is a GUI library.
