@@ -5,7 +5,7 @@ App::App()
 {
 	if (+win.Create(0, 0, 800, 600, GWindowStyle::WINDOWEDBORDERED))
 	{
-		VkClearValue clrAndDepth[2];
+		//VkClearValue clrAndDepth[2];
 		clrAndDepth[0].color = { {0.025f, 0.095f, 0.155f, 0.25f} };
 		clrAndDepth[1].depthStencil = { 1.0f, 0u }; win.SetWindowName("Particle System");
 
@@ -35,19 +35,8 @@ App::App()
 		if (+vulkan.Create(win, GW::GRAPHICS::DEPTH_BUFFER_SUPPORT))
 #endif
 		{
-
 			// main app loop
-			//Renderer renderer(win, vulkan);
-			while (+win.ProcessWindowEvents())
-			{
-				if (+vulkan.StartFrame(2, clrAndDepth))
-				{
-					//renderer.Render();
-					Run();
-					vulkan.EndFrame(true);
-				}
-			}
-			
+			Run();
 		}
 	}
 }
@@ -59,6 +48,15 @@ App::~App()
 // Any app-wide logic goes here
 int App::Run()
 {
+	//Renderer renderer(win, vulkan);
+	while (+win.ProcessWindowEvents())
+	{
+		if (+vulkan.StartFrame(2, clrAndDepth))
+		{
+			//renderer.Render();
+			vulkan.EndFrame(true);
+		}
+	}
 	return 0;
 }
 

@@ -34,16 +34,17 @@ enum AppPerformance : uint8_t
 enum AppUpdateStatus : uint8_t
 {
 	APP_UPDATE_OK = 0,
-	APP_UPDATE_ERROR = -1,
-	APP_UPDATE_EXIT = 1
+	APP_UPDATE_ERROR = 5,
+	APP_UPDATE_EXIT = 10
 };
 
 class App
 {
+	GW::SYSTEM::UNIVERSAL_WINDOW_HANDLE*  m_windowHandle;
 	GWindow win;
 	GEventResponder msgs;
 	GVulkanSurface vulkan;
-	GW::SYSTEM::GApp m_app;
+	VkClearValue clrAndDepth[2];
 	AppState m_state = APP_RUNNING;
 	AppUpdateStatus m_updateStatus = APP_UPDATE_OK;
 	AppUpdateStatus m_fixedUpdateStatus = APP_UPDATE_OK;
