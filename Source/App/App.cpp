@@ -3,7 +3,7 @@
 
 App::App()
 {
-	if (+ m_app.Create([]() -> int
+	if (!+ m_app.Create([]() -> int
 		{
 			std::cout << "GApp created successfully." << std::endl;
 			return 0;
