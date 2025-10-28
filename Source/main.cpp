@@ -1,12 +1,9 @@
 #include <iostream>
 #include "precompiled.h"
+#include "App/App.h"
 
-
-
-int main()
+int AppCycle()
 {
-	std::cout << "Hello, World!\n" << std::endl;
-
 	GWindow win;
 	GEventResponder msgs;
 	GVulkanSurface vulkan;
@@ -54,4 +51,13 @@ int main()
 		}
 	}
 	return 0; // that's all folks
+}
+
+int main()
+{
+	std::cout << "Hello, World!\n" << std::endl;
+
+	App app;
+
+	return -1; // failed to create Gateware application
 }
