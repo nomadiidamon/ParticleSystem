@@ -61,6 +61,7 @@ class Renderer
 		GW::MATH::GMATRIXF myWorldMatrix[6];
 		GW::MATH::GMATRIXF myViewMatrix;
 		GW::MATH::GMATRIXF myProjectionMatrix;
+		float rotationAmount; // rotation in radians
 	};
 	SHADER_VARS instanceData;
 	// TODO: Part 3a
@@ -829,6 +830,7 @@ public:
 		instanceData.myWorldMatrix[5] = worldMatrixSix;
 		instanceData.myViewMatrix = viewMatrix;
 		instanceData.myProjectionMatrix = leftHandProjMatrix;
+		instanceData.rotationAmount += 0.01f;
 		 
 		
 		// TODO: Part 2i // TODO: Part 4y
