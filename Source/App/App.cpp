@@ -3,6 +3,8 @@
 
 App::App()
 {
+
+	// create the window
 	if (+win.Create(0, 0, 800, 600, GWindowStyle::WINDOWEDBORDERED))
 	{
 		//VkClearValue clrAndDepth[2];

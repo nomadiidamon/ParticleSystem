@@ -1,5 +1,6 @@
 #pragma once
 #include "../precompiled.h"
+#include "../UTIL/XTime.h"
 
 
 enum AppState : uint8_t

@@ -5,6 +5,7 @@
 #pragma comment(lib, "shaderc_combined.lib") 
 #endif
 #include "UTIL/FileIntoString.h"
+#include "UTIL/XTime.h"
 #include "Camera/FreeLookCamera.h"
 
 void PrintLabeledDebugString(const char* label, const char* toPrint)
@@ -19,6 +20,8 @@ void PrintLabeledDebugString(const char* label, const char* toPrint)
 }
 class Renderer
 {
+	XTime time;
+
 	// proxy handles
 	GW::SYSTEM::GWindow win;
 	GW::GRAPHICS::GVulkanSurface vlk;
@@ -86,6 +89,9 @@ class Renderer
 public:
 	Renderer(GW::SYSTEM::GWindow _win, GW::GRAPHICS::GVulkanSurface _vlk)
 	{
+		time = XTime(100, 0.9f); // 100 samples, 0.9 smooth factor
+		time.Restart();
+
 		win = _win;
 		vlk = _vlk;
 
@@ -830,7 +836,8 @@ public:
 		instanceData.myWorldMatrix[5] = worldMatrixSix;
 		instanceData.myViewMatrix = viewMatrix;
 		instanceData.myProjectionMatrix = leftHandProjMatrix;
-		instanceData.rotationAmount += 0.01f * 1.0f;
+		instanceData.rotationAmount += 0.01f * (float)(time.TotalTime());
+		time.Signal();
 		 
 		
 		// TODO: Part 2i // TODO: Part 4y
