@@ -5,10 +5,10 @@ App::App()
 {
 	if (!+ m_app.Create([]() -> int
 		{
-			std::cout << "GApp created successfully." << std::endl;
 			return 0;
 		})) {
 
+			std::cout << "GApp created successfully." << std::endl;
 
 		// main app loop
 		while (m_state != APP_EXIT)
