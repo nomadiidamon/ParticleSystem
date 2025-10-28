@@ -57,7 +57,7 @@ int main()
 {
 	std::cout << "Hello, World!\n" << std::endl;
 
-	App app();
+	App app;
 
 	return -1; // failed to create Gateware application
 }

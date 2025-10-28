@@ -1,7 +1,7 @@
 #include "../precompiled.h"
 #include "App.h"
 
-App::App(std::function< int()> _desktopMainFunction)
+App::App()
 {
 	if (+win.Create(0, 0, 800, 600, GWindowStyle::WINDOWEDBORDERED))
 	{
