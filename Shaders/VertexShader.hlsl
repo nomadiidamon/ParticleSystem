@@ -1,50 +1,27 @@
-struct Vertex_Input
+// an ultra simple hlsl vertex shader
+// TODO: Part 1c
+struct VERTEX
 {
-    float3 position : POSITION;
-    float3 normal : NORMAL;
-    float2 texcoord : TEXCOORD;
-    float4 tangent : TANGENT;
+    float4 pos : SV_POSITION;
 };
-
-struct Vertex_Output
-{
-    float4 positionH : SV_POSITION;
-    float3 positionW : WORLD;
-    float3 normal : NORMAL;
-    float2 texcoord : TEXCOORD;
-    float4 tangent : TANGENT;
-    float4 camPos : CAMPOS;
-
-};
-
+// TODO: Part 2b
 cbuffer SHADER_VARS
 {
+	float4x4 myWorldMatrix[6];
     float4x4 myViewMatrix;
     float4x4 myProjectionMatrix;
-    float4 lightDirection;
-    float4 lightColor;
-    float4 camPos;
 };
-
-Vertex_Output main(Vertex_Input inVert) : SV_POSITION
+	// TODO: Part 3b
+	// TODO: Part 3f
+// TODO: Part 3g
+float4 main(VERTEX inputVertex : POSITION,
+uint matrix_index : SV_InstanceID) : SV_POSITION
 {
-    Vertex_Output vOut = (Vertex_Output)0;
-    //float4x4 identity = float4x4(1, 0, 0, 0,
-    //                              0, 1, 0, 0,
-    //                              0, 0, 1, 0,
-    //                              0, 0, 0, 1);
-    
-    //float4 newWorld = mul(identity, float4(inVert.position, 1));
-    float4 newWorld =  float4(inVert.position, 1);
-
-    vOut.positionW = newWorld.xyz;
-    float4 newView =  mul(myViewMatrix, newWorld);
-    float4 newProj = mul(myProjectionMatrix, newView); 
-    
-    vOut.positionH = newProj;
-    vOut.normal = inVert.normal;
-    vOut.texcoord = inVert.texcoord;
-    vOut.tangent = inVert.tangent;
-    
-    return vOut;
+	// TODO: Part 2i
+    float4 retval = mul((myWorldMatrix[matrix_index]), inputVertex.pos);
+	// TODO: Part 3b
+    retval = mul((myViewMatrix), retval);
+    retval = mul((myProjectionMatrix), retval);
+	// TODO: Part 3g
+	return retval;
 }
