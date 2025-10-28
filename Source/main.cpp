@@ -41,7 +41,6 @@ int main()
 		if (+vulkan.Create(win, GW::GRAPHICS::DEPTH_BUFFER_SUPPORT))
 #endif
 		{
-
 			//Renderer renderer(win, vulkan);
 			while (+win.ProcessWindowEvents())
 			{
