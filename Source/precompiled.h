@@ -26,9 +26,3 @@ using namespace GW;
 using namespace CORE;
 using namespace SYSTEM;
 using namespace GRAPHICS;
-
-
-
-/// wxWidgets is a GUI library.
-// DOCUMENTATION: ../Dependencies/wxWidgets-3.1.7/docs/Cross-Platform GUI Programming with wxWidgets
-#include <wx/wx.h>
