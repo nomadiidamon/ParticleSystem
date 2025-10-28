@@ -51,7 +51,7 @@ class App
 
 public:
 
-	App();
+	App(std::function< int()> _desktopMainFunction);
 	~App();
 
 	int Run();

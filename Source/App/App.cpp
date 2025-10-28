@@ -1,14 +1,11 @@
 #include "../precompiled.h"
 #include "App.h"
 
-App::App()
+App::App(std::function< int()> _desktopMainFunction)
 {
-	if (!+ m_app.Create([]() -> int
-		{
-			return 0;
-		})) {
-
-
+	if (!+ m_app.Create(_desktopMainFunction))
+	{
+		std::cout << "GApp created successfully." << std::endl;
 		// main app loop
 		while (m_state != APP_EXIT)
 		{
@@ -17,8 +14,6 @@ App::App()
 				Run();
 			}
 		}
-
-
 	}
 }
 
@@ -29,7 +24,6 @@ App::~App()
 // Any app-wide logic goes here
 int App::Run()
 {
-			std::cout << "GApp created successfully." << std::endl;
 	return 0;
 }
 
