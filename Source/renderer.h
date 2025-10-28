@@ -103,7 +103,7 @@ public:
 		InitializeDescriptorLayout();
 
 		// TODO: Part 3a
-		InitializeViewMatrix(0.0f, -1.15f, -1.15f, -5.0f, 0.0f);
+		InitializeViewMatrix(0.0f, -1.35f, -1.25f, -5.0f, 0.0f);
 		// TODO: Part 3c
 		float aspectRatio = 0.0f;
 		vlk.GetAspectRatio(aspectRatio);
