@@ -34,6 +34,7 @@ public:
 
 	entt::registry m_registry;
 
+
 	// Local routines for specific application behavior
 	void GraphicsBehavior(entt::registry& registry);
 	void GameplayBehavior(entt::registry& registry);
