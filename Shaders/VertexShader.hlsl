@@ -8,26 +8,12 @@ cbuffer SHADER_VARS
 	float4x4 myWorldMatrix[6];
     float4x4 myViewMatrix;
     float4x4 myProjectionMatrix;
-    float rotationAmount; // rotation in radians
 };
 
-// Helper: rotation around Z-axis
-float4x4 CreateZRotation(float angle)
-{
-    float s = sin(angle);
-    float c = cos(angle);
-    return float4x4(
-        c, -s, 0, 0,
-        s, c, 0, 0,
-        0, 0, 1, 0,
-        0, 0, 0, 1
-    );
-}
 
 float4 main(VERTEX inputVertex : POSITION,
 uint matrix_index : SV_InstanceID) : SV_POSITION
 {
-    
     float4 retval = mul((myWorldMatrix[matrix_index]), inputVertex.pos);
     retval = mul((myViewMatrix), retval);
     retval = mul((myProjectionMatrix), retval);

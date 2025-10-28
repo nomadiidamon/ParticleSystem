@@ -1,35 +1,14 @@
 #pragma once
 #include "../precompiled.h"
-#include "../UTIL/XTime.h"
-
+#include "AppManager.h"
 
 enum AppState : uint8_t
 {
+	APP_LOADING,
 	APP_RUNNING,
-	APP_BACKGROUND,
-	APP_EXIT
-};
-
-enum AppWindowMode : uint8_t
-{
-	APP_MODE_WINDOWED,
-	APP_MODE_FULLSCREEN,
-	APP_MODE_BORDERLESS
-};
-
-enum AppQuality : uint8_t
-{
-	APP_QUALITY_LOW,
-	APP_QUALITY_MEDIUM,
-	APP_QUALITY_HIGH,
-	APP_QUALITY_ULTRA
-};
-
-enum AppPerformance : uint8_t
-{
-	APP_PERFORMANCE_BATTERY,
-	APP_PERFORMANCE_BALANCED,
-	APP_PERFORMANCE_HIGH
+	APP_UNFOCUSED,
+	APP_MINIMIZED,
+	APP_EXITING
 };
 
 enum AppUpdateStatus : uint8_t
@@ -39,8 +18,11 @@ enum AppUpdateStatus : uint8_t
 	APP_UPDATE_EXIT = 10
 };
 
+
+
 class App
 {
+	AppManager manager;
 	GW::SYSTEM::UNIVERSAL_WINDOW_HANDLE*  m_windowHandle;
 	GWindow win;
 	GEventResponder msgs;
@@ -62,6 +44,7 @@ public:
 
 	int Update();
 	int FixedUpdate();
+
 
 private:
 	int HandleUpdate();

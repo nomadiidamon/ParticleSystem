@@ -60,6 +60,7 @@ int App::Run()
 		{
 			renderer.Render();
 			vulkan.EndFrame(true);
+			manager.MainLoopBehavior(manager.m_registry);
 		}
 	}
 	return 0;
@@ -70,7 +71,7 @@ int App::Update()
 {
 	// are we in background?
 
-	if (m_state == APP_BACKGROUND)
+	if (m_state == APP_UNFOCUSED)
 	{
 		// sleep for background interval
 		//GW::SYSTEM::GSystem::Sleep(static_cast<uint32_t>(m_backgroundInterval * 1000.0f));
@@ -85,7 +86,7 @@ int App::Update()
 int App::FixedUpdate()
 {
 	// are we in background?
-	if (m_state == APP_BACKGROUND)
+	if (m_state == APP_UNFOCUSED)
 	{
 		// sleep for background interval
 		//GW::SYSTEM::GSystem::Sleep(static_cast<uint32_t>(m_backgroundInterval * 1000.0f));
