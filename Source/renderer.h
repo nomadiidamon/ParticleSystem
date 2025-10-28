@@ -516,7 +516,7 @@ private:
 
 	void CompileVertexShader(const shaderc_compiler_t& compiler, const shaderc_compile_options_t& options)
 	{
-		std::string vertexShaderSource = ReadFileIntoString("../VertexShader.hlsl");
+		std::string vertexShaderSource = ReadFileIntoString("../Shaders/VertexShader.hlsl");
 
 		shaderc_compilation_result_t result = shaderc_compile_into_spv( // compile
 			compiler, vertexShaderSource.c_str(), vertexShaderSource.length(),
@@ -537,7 +537,7 @@ private:
 
 	void CompileFragmentShader(const shaderc_compiler_t& compiler, const shaderc_compile_options_t& options)
 	{
-		std::string fragmentShaderSource = ReadFileIntoString("../FragmentShader.hlsl");
+		std::string fragmentShaderSource = ReadFileIntoString("../Shaders/FragmentShader.hlsl");
 
 		shaderc_compilation_result_t result = shaderc_compile_into_spv( // compile
 			compiler, fragmentShaderSource.c_str(), fragmentShaderSource.length(),
