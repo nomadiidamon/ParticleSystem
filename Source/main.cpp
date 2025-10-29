@@ -5,6 +5,9 @@ int main()
 {
 	std::cout << "Hello, World!\n" << std::endl;
 
-	App app;
+	ImGui::Begin("Hello, world!");
+	ImGui::End();
+
+	//App app;
 	return -1; // failed to create Gateware application
 }

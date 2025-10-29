@@ -29,3 +29,6 @@ using namespace GRAPHICS;
 
 
 //// utilities
+#define IMGUI_DEFINE_MATH_OPERATORS
+#include "../Dependencies/Imgui/imgui.h"
+#include "../Dependencies/Imgui/imgui_impl_win32.h"
