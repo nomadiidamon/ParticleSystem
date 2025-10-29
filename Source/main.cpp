@@ -7,6 +7,11 @@ int main()
 
 	ImGui::Begin("Hello, world!");
 
+	while (true)
+	{
+		// run the app
+		ImGui::NewFrame();
+	}
 
 	//App app;
 	return -1; // failed to create Gateware application
