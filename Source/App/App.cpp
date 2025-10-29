@@ -37,8 +37,6 @@ App::App()
 		if (+vulkan.Create(win, GW::GRAPHICS::DEPTH_BUFFER_SUPPORT))
 #endif
 		{
-			// test the type of window handle
-			win.ChangeWindowStyle(GW::SYSTEM::GWindowStyle::WINDOWEDLOCKED);
 
 			// main app loop
 			Run();
