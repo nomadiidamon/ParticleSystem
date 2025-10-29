@@ -5,7 +5,7 @@ App::App()
 {
 
 	// create the window
-	if (+win.Create(0, 0, 800, 600, GWindowStyle::WINDOWEDBORDERED))
+	if (+win.Create(0, 0, 800, 600, GWindowStyle::FULLSCREENBORDERED))
 	{
 		//VkClearValue clrAndDepth[2];
 		clrAndDepth[0].color = { {0.025f, 0.095f, 0.155f, 0.25f} };
