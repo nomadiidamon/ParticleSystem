@@ -1,5 +1,6 @@
 #include <iostream>
 #include <windows.h>
+#include "APP/App.h"
 #include "precompiled.h"
 
 
@@ -7,6 +8,9 @@
 int main()
 {
 	std::cout << "Hello, World!\n" << std::endl;
+	App app;
+
+
 
 	// Make process DPI aware and obtain main monitor scale
 	ImGui_ImplWin32_EnableDpiAwareness();
