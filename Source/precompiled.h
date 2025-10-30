@@ -35,3 +35,7 @@ using namespace GRAPHICS;
 #define VK_USE_PLATFORM_WIN32_KHR
 #include "../Dependencies/Imgui/imgui_impl_vulkan.h"
 #include <windows.h>
+#define APP_USE_UNLIMITED_FRAME_RATE
+#ifdef _DEBUG
+#define APP_USE_VULKAN_DEBUG_REPORT
+#endif
