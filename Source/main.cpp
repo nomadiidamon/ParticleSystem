@@ -7,6 +7,8 @@ int main()
 {
 	std::cout << "Hello, World!\n" << std::endl;
 
+	ImGui::Begin("Hello!");
+	ImGui::NewFrame();
 
 	// Create application window
 	while (true)
