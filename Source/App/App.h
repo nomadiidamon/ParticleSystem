@@ -35,9 +35,19 @@ class App
 	float m_backgroundInterval = 0.1f; // 10 FPS
 
 
+	VkDevice device = nullptr;
+	VkPhysicalDevice physicalDevice = nullptr;
+	VkBuffer vertexHandle = nullptr;
+	VkDeviceMemory vertexData = nullptr;
+	VkShaderModule vertexShader = nullptr;
+	VkShaderModule fragmentShader = nullptr;
+	VkPipeline pipeline = nullptr;
+	VkPipelineLayout pipelineLayout = nullptr;
+
 public:
 
 	App();
+	App(bool quick);
 	~App();
 
 	int Run();

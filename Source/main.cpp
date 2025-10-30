@@ -4,59 +4,123 @@
 #include "precompiled.h"
 
 
+// Forward declare Win32 proc
+extern LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
+LRESULT WINAPI WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
 int main()
 {
-	std::cout << "Hello, World!\n" << std::endl;
-	App app;
+    // 1. Create Win32 window
+    WNDCLASSEX wc = { sizeof(WNDCLASSEX), CS_CLASSDC, WndProc, 0L, 0L,
+                      GetModuleHandle(NULL), NULL, NULL, NULL, NULL,
+                      L"ImGui Vulkan Example", NULL };
+    RegisterClassEx(&wc);
+    HWND hwnd = CreateWindow(wc.lpszClassName, L"Dear ImGui Vulkan Example",
+        WS_OVERLAPPEDWINDOW, 100, 100, 1280, 720,
+        NULL, NULL, wc.hInstance, NULL);
 
+    // 2. Initialize Vulkan (instance, device, swapchain, etc.)
+    // Normally you'd create VkInstance, VkDevice, VkRenderPass, etc.
+    // For simplicity, refer to ImGui’s example_vulkan/main.cpp for full Vulkan setup.
+    // Here we’ll assume you have a VkInstance, VkDevice, VkRenderPass ready.
+    //VkInstance instance = ...;
+    //VkDevice device = ...;
+    //VkRenderPass render_pass = ...;
+    //VkQueue queue = ...;
+    //uint32_t queue_family = ...;
+    //VkDescriptorPool descriptor_pool = ...;
 
+    // 3. Setup Dear ImGui context
+    IMGUI_CHECKVERSION();
+    ImGui::CreateContext();
+    ImGuiIO& io = ImGui::GetIO(); (void)io;
+    ImGui::StyleColorsDark();
 
-	// Make process DPI aware and obtain main monitor scale
-	ImGui_ImplWin32_EnableDpiAwareness();
-	float main_scale = ImGui_ImplWin32_GetDpiScaleForMonitor(::MonitorFromPoint(POINT{ 0, 0 }, MONITOR_DEFAULTTOPRIMARY));
+    // 4. Setup Platform/Renderer backends
+    ImGui_ImplWin32_Init(hwnd);
+    ImGui_ImplVulkan_InitInfo init_info = {};
+    //init_info.Instance = instance;
+    //init_info.PhysicalDevice = /* your physical device */;
+    //init_info.Device = device;
+    //init_info.QueueFamily = queue_family;
+    //init_info.Queue = queue;
+    init_info.PipelineCache = VK_NULL_HANDLE;
+    //init_info.DescriptorPool = descriptor_pool;
+    init_info.MinImageCount = 2;
+    init_info.ImageCount = 2;
+    //init_info.MSAASamples = VK_SAMPLE_COUNT_1_BIT;
+	init_info.PipelineInfoMain.MSAASamples = VK_SAMPLE_COUNT_1_BIT;
+    init_info.CheckVkResultFn = nullptr;
+    ImGui_ImplVulkan_Init(&init_info);
 
+    //// Upload Fonts
+    //{
+    //    VkCommandBuffer command_buffer = /* begin single-use command buffer */;
+    //    ImGui_ImplVulkan_CreateFontsTexture(command_buffer);
+    //    /* end command buffer and submit */;
+    //    ImGui_ImplVulkan_DestroyFontUploadObjects();
+    //}
 
-	// initialize ImGui
-	IMGUI_CHECKVERSION();
-	ImGui::CreateContext();
-	ImGuiIO& io = ImGui::GetIO(); (void)io;
-	io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
-	io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
-	io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;         // Enable Docking
-	io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;       // Enable Multi-Viewport / Platform Windows
-	io.DisplaySize = ImVec2(1280, 720);  // any positive window size
+    ShowWindow(hwnd, SW_SHOWDEFAULT);
+    UpdateWindow(hwnd);
 
+    // 5. Main loop
+    bool done = false;
+    while (!done)
+    {
+        MSG msg;
+        while (PeekMessage(&msg, NULL, 0U, 0U, PM_REMOVE))
+        {
+            TranslateMessage(&msg);
+            DispatchMessage(&msg);
+            if (msg.message == WM_QUIT)
+                done = true;
+        }
+        if (done)
+            break;
 
-	// Setup Dear ImGui style
-	ImGui::StyleColorsDark();
+        // Start new frame
+        ImGui_ImplVulkan_NewFrame();
+        ImGui_ImplWin32_NewFrame();
+        ImGui::NewFrame();
 
-	// Setup scaling
-	ImGuiStyle& style = ImGui::GetStyle();
-	style.ScaleAllSizes(main_scale);        // Bake a fixed style scale. (until we have a solution for dynamic style scaling, changing this requires resetting Style + calling this again)
-	style.FontScaleDpi = main_scale;        // Set initial font scale. (using io.ConfigDpiScaleFonts=true makes this unnecessary. We leave both here for documentation purpose)
-	io.ConfigDpiScaleFonts = true;          // [Experimental] Automatically overwrite style.FontScaleDpi in Begin() when Monitor DPI changes. This will scale fonts but _NOT_ scale sizes/padding for now.
-	io.ConfigDpiScaleViewports = true;      // [Experimental] Scale Dear ImGui and Platform Windows when Monitor DPI changes.
+        // Draw GUI
+        ImGui::Begin("Hello!");
+        ImGui::Text("This is Dear ImGui running on Vulkan!");
+        ImGui::End();
 
-	// When viewports are enabled we tweak WindowRounding/WindowBg so platform windows can look identical to regular ones.
-	if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
-	{
-		style.WindowRounding = 0.0f;
-		style.Colors[ImGuiCol_WindowBg].w = 1.0f;
-	}
+        // Render
+        ImGui::Render();
+        // Record Vulkan commands to render ImGui draw data
+        //ImGui_ImplVulkan_RenderDrawData(ImGui::GetDrawData(), /*your_command_buffer*/);
+    }
 
-	// start a frame
-	ImGui::NewFrame();
+    // Cleanup
+    ImGui_ImplVulkan_Shutdown();
+    ImGui_ImplWin32_Shutdown();
+    ImGui::DestroyContext();
+    DestroyWindow(hwnd);
+    UnregisterClass(wc.lpszClassName, wc.hInstance);
 
-	// create a window
-	ImGui::Begin("Hello!");
+    return 0;
+}
 
-	ImGui::Text("This is some useful text.");
-	ImGui::End();
-	ImGui::Render();
-
-	// Cleanup
-	ImGui::DestroyContext();
-
-	return 0;
+// Win32 WndProc
+LRESULT WINAPI WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
+{
+    if (ImGui_ImplWin32_WndProcHandler(hWnd, msg, wParam, lParam))
+        return true;
+    switch (msg)
+    {
+    case WM_SIZE:
+        if (wParam != SIZE_MINIMIZED)
+        {
+            // handle swapchain resize here
+        }
+        return 0;
+    case WM_DESTROY:
+        PostQuitMessage(0);
+        return 0;
+    }
+    return DefWindowProc(hWnd, msg, wParam, lParam);
 }
