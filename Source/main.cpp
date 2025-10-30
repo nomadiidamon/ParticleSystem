@@ -10,9 +10,7 @@ int main()
 
 	// Create application window
 
-	ImGui::Begin("Hello!");
 	ImGui::ShowAboutWindow();
-	ImGui::End();
 	//App app;
 	return -1; // failed to create Gateware application
 }
