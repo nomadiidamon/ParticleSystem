@@ -39,7 +39,7 @@ App::App()
 		{
 
 			// main app loop
-			Run();
+			//Run();
 		}
 	}
 }
