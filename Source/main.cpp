@@ -7,7 +7,8 @@ int main()
 
 	ImGui::Begin("Hello, world!");
 
-	while (true)
+	bool active = true;
+	while (active)
 	{
 		// run the app
 		ImGui::NewFrame();
