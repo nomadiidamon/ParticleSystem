@@ -1,27 +1,12 @@
 #pragma once
-// minimalistic code to draw a single triangle, this is not part of the API.
-#include "shaderc/shaderc.h" // needed for compiling shaders at runtime
-#ifdef _WIN32 // must use MT platform DLL libraries on windows
-#pragma comment(lib, "shaderc_combined.lib") 
-#endif
-#include "UTIL/FileIntoString.h"
-#include "UTIL/XTime.h"
-#include "Camera/FreeLookCamera.h"
+#include "UTIL/Iuvo/IuvoUtils.h"
+#include "Camera/Camera.h"
 
-void PrintLabeledDebugString(const char* label, const char* toPrint)
-{
-	std::cout << label << toPrint << std::endl;
 
-	//OutputDebugStringA is a windows-only function 
-#if defined WIN32 
-	OutputDebugStringA(label);
-	OutputDebugStringA(toPrint);
-#endif
-}
 class Renderer
 {
 	XTime time;
-
+	Camera camera;
 	// proxy handles
 	GW::SYSTEM::GWindow win;
 	GW::GRAPHICS::GVulkanSurface vlk;
@@ -91,6 +76,7 @@ public:
 	{
 		time = XTime(100, 0.9f); // 100 samples, 0.9 smooth factor
 		time.Restart();
+		
 
 		win = _win;
 		vlk = _vlk;
@@ -523,7 +509,7 @@ private:
 
 	void CompileVertexShader(const shaderc_compiler_t& compiler, const shaderc_compile_options_t& options)
 	{
-		std::string vertexShaderSource = ReadFileIntoString("../Shaders/VertexShader.hlsl");
+		std::string vertexShaderSource = Iuvo::ReadFileIntoString("../Shaders/VertexShader.hlsl");
 
 		shaderc_compilation_result_t result = shaderc_compile_into_spv( // compile
 			compiler, vertexShaderSource.c_str(), vertexShaderSource.length(),
@@ -544,7 +530,7 @@ private:
 
 	void CompileFragmentShader(const shaderc_compiler_t& compiler, const shaderc_compile_options_t& options)
 	{
-		std::string fragmentShaderSource = ReadFileIntoString("../Shaders/FragmentShader.hlsl");
+		std::string fragmentShaderSource = Iuvo::ReadFileIntoString("../Shaders/FragmentShader.hlsl");
 
 		shaderc_compilation_result_t result = shaderc_compile_into_spv( // compile
 			compiler, fragmentShaderSource.c_str(), fragmentShaderSource.length(),
@@ -821,7 +807,7 @@ public:
 		// TODO: Part 4x
 		unsigned int currentBuffer = 0;
 		vlk.GetSwapchainCurrentImage(currentBuffer);
-		instanceData.myViewMatrix = FreeLookCamera(win, instanceData.myViewMatrix);
+		instanceData.myViewMatrix = camera.FreeLookCamera(win, instanceData.myViewMatrix);
 		//instanceData.myViewMatrix = viewMatrix;
 		GvkHelper::write_to_buffer(device, uniformBufferData[currentBuffer], &instanceData, sizeof(SHADER_VARS));
 
@@ -923,5 +909,16 @@ private:
 		vkDestroyShaderModule(device, fragmentShader, nullptr);
 		vkDestroyPipelineLayout(device, pipelineLayout, nullptr);
 		vkDestroyPipeline(device, pipeline, nullptr);
+	}
+
+	void PrintLabeledDebugString(const char* label, const char* toPrint)
+	{
+		std::cout << label << toPrint << std::endl;
+
+		//OutputDebugStringA is a windows-only function 
+#if defined WIN32 
+		OutputDebugStringA(label);
+		OutputDebugStringA(toPrint);
+#endif
 	}
 };

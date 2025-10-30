@@ -6,6 +6,9 @@
 // DOCUMENTATION: https://skypjack.github.io/entt/
 #include "../Dependencies/entt-3.13.1/single_include/entt/entt.hpp"
 
+//// Json is a popular data interchange format.
+// DOCUMENTATION:
+#include "../Dependencies/json/json.hpp"
 
 //// Gateware is a modular PAL library.
 // DOCUMENTATION: gateware-main/documentation/html/index.html
@@ -39,3 +42,13 @@ using namespace GRAPHICS;
 #ifdef _DEBUG
 #define APP_USE_VULKAN_DEBUG_REPORT
 #endif
+
+
+#include "shaderc/shaderc.h" // needed for compiling shaders at runtime
+#ifdef _WIN32 // must use MT platform DLL libraries on windows
+#pragma comment(lib, "shaderc_combined.lib") 
+#endif
+#include "CCL.h"
+#include "UTIL/h2bParser.h"
+#include "UTIL/load_data_oriented.h"
+#include "UTIL/XTime.h"

@@ -1,18 +1,24 @@
 #include <iostream>
-#include "APP/App.h"
+#include "UTIL/Iuvo/IuvoUtils.h"
+#include "APP/DefaultApp.h"
+#include "APP/ParticleSystemApp.h"
 #include "precompiled.h"
-
-
-
 
 
 int main()
 {
-	std::cout << "Hello World!" << std::endl;
-    App app;
+	Iuvo::MemoryNet(); // check for memory leaks
+
+	entt::registry registry;
+    CCL::InitializeComponentLogic(registry);
+
+	APP::DefaultApp defaultApp;
+    APP::ParticleSystemApp psApp("Particle System", 100, 100, 1280, 720, GWindowStyle::WINDOWEDBORDERED, registry);
+    psApp.Run();
 
 
+    // clear all entities and components from the registry
+    // invokes on_destroy() for all components that have it
+    registry.clear();
     return 0;
 }
-
-

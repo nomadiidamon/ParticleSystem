@@ -2,11 +2,19 @@
 
 namespace
 {
-	// Component logic functions
-	std::list<std::function<void(entt::registry& reg)>> componentLogic;
+	//// Component logic functions
+	//std::list<std::function<void(entt::registry& reg)>> componentLogic;
 
+	//std::list<std::function<void(entt::registry& reg)>>& GetComponentLogic()
+	//{
+	//	return componentLogic;
+	//}
+
+
+	/// Using function static variable to avoid static initialization order fiasco
 	std::list<std::function<void(entt::registry& reg)>>& GetComponentLogic()
 	{
+		static std::list<std::function<void(entt::registry& reg)>> componentLogic;
 		return componentLogic;
 	}
 }
