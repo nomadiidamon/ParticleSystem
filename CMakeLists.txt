@@ -41,10 +41,4 @@ set_source_files_properties(${SHADER_FILES} PROPERTIES
     VS_TOOL_OVERRIDE "None"
 )
 
-add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
-    COMMAND git add --all || true
-    COMMAND git commit -a -m "auto commit" || true
-    COMMAND git push
-    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
-    VERBATIM USES_TERMINAL
-)
+
