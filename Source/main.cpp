@@ -12,10 +12,6 @@ int main()
 	ImGui_ImplWin32_EnableDpiAwareness();
 	float main_scale = ImGui_ImplWin32_GetDpiScaleForMonitor(::MonitorFromPoint(POINT{ 0, 0 }, MONITOR_DEFAULTTOPRIMARY));
 
-	// setup window
-	GWindow window;
-	window.Create(100, 100, 1280, 720, GW::SYSTEM::GWindowStyle::WINDOWEDBORDERED);
-
 	// initialize ImGui
 	IMGUI_CHECKVERSION();
 	ImGui::CreateContext();
