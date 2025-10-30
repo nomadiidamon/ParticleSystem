@@ -32,3 +32,6 @@ using namespace GRAPHICS;
 #define IMGUI_DEFINE_MATH_OPERATORS
 #include "../Dependencies/Imgui/imgui.h"
 #include "../Dependencies/Imgui/imgui_impl_win32.h"
+#define VK_USE_PLATFORM_WIN32_KHR
+#include "../Dependencies/Imgui/imgui_impl_vulkan.h"
+#include <windows.h>
