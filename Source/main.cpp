@@ -32,14 +32,22 @@ static void check_vk_result(VkResult err)
 void SetupVulkan()
 {
     // Create Vulkan instance
-    VkInstanceCreateInfo create_info = {};
-    create_info.sType = VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO;
-
     VkApplicationInfo app_info = {};
     app_info.sType = VK_STRUCTURE_TYPE_APPLICATION_INFO;
     app_info.pApplicationName = "ImGui Vulkan Example";
     app_info.apiVersion = VK_API_VERSION_1_1;
+
+    // Required extensions for Vulkan surface on Win32
+    const char* extensions[] = {
+        "VK_KHR_surface",
+        "VK_KHR_win32_surface"
+    };
+
+    VkInstanceCreateInfo create_info = {};
+    create_info.sType = VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO;
     create_info.pApplicationInfo = &app_info;
+    create_info.enabledExtensionCount = 2;
+    create_info.ppEnabledExtensionNames = extensions;
 
     check_vk_result(vkCreateInstance(&create_info, nullptr, &g_Instance));
 
@@ -159,22 +167,47 @@ int main()
 
     // 4. Initialize ImGui Vulkan/Win32 backends
     ImGui_ImplWin32_Init(hwnd);
-    ImGui_ImplVulkan_InitInfo init_info = {};
-    init_info.Instance = g_Instance;
-    init_info.PhysicalDevice = g_PhysicalDevice;
-    init_info.Device = g_Device;
-    init_info.QueueFamily = g_QueueFamily;
-    init_info.Queue = g_Queue;
-    init_info.DescriptorPool = g_DescriptorPool;
-    init_info.MinImageCount = 2;
-    init_info.ImageCount = 2;
-    init_info.PipelineInfoMain.MSAASamples = VK_SAMPLE_COUNT_1_BIT;
-    init_info.CheckVkResultFn = check_vk_result;
-    ImGui_ImplVulkan_Init(&init_info);
+    //ImGui_ImplVulkan_InitInfo init_info = {};
+    //init_info.Instance = g_Instance;
+    //init_info.PhysicalDevice = g_PhysicalDevice;
+    //init_info.Device = g_Device;
+    //init_info.QueueFamily = g_QueueFamily;
+    //init_info.Queue = g_Queue;
+    //init_info.DescriptorPool = g_DescriptorPool;
+    //init_info.MinImageCount = 2;
+    //init_info.ImageCount = 2;
+    //init_info.PipelineInfoMain.MSAASamples = VK_SAMPLE_COUNT_1_BIT;
+    //init_info.CheckVkResultFn = check_vk_result;
+    //ImGui_ImplVulkan_Init(&init_info);
 
-    //// Upload fonts
-    //ImGui_ImplVulkan_CreateFontsTexture(VK_NULL_HANDLE);
-    //ImGui_ImplVulkan_DestroyFontUploadObjects();
+    //ImGuiPlatformIO& platform_io = ImGui::GetPlatformIO();
+    //platform_io.Platform_CreateVkSurface = [](ImGuiViewport* vp, ImU64 vk_inst, const void* vk_allocators, VkSurfaceKHR* out_surface)
+    //    {
+    //        VkWin32SurfaceCreateInfoKHR sci = {};
+    //        sci.sType = VK_STRUCTURE_TYPE_WIN32_SURFACE_CREATE_INFO_KHR;
+    //        sci.hinstance = GetModuleHandle(NULL);
+    //        sci.hwnd = (HWND)vp->PlatformHandleRaw;
+    //        return (VkResult)vkCreateWin32SurfaceKHR((VkInstance)vk_inst, &sci, (const VkAllocationCallbacks*)vk_allocators, out_surface);
+    //    };
+
+    VkApplicationInfo app_info = {};
+    app_info.sType = VK_STRUCTURE_TYPE_APPLICATION_INFO;
+    app_info.pApplicationName = "ImGui Vulkan Example";
+    app_info.apiVersion = VK_API_VERSION_1_1;
+
+    // Required extensions for Vulkan surface on Win32
+    const char* extensions[] = {
+        "VK_KHR_surface",
+        "VK_KHR_win32_surface"
+    };
+
+    VkInstanceCreateInfo create_info = {};
+    create_info.sType = VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO;
+    create_info.pApplicationInfo = &app_info;
+    create_info.enabledExtensionCount = 2;
+    create_info.ppEnabledExtensionNames = extensions;
+
+    check_vk_result(vkCreateInstance(&create_info, nullptr, &g_Instance));
 
     ShowWindow(hwnd, SW_SHOWDEFAULT);
     UpdateWindow(hwnd);
