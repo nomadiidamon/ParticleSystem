@@ -12,6 +12,7 @@ int main()
 	ImGui_ImplWin32_EnableDpiAwareness();
 	float main_scale = ImGui_ImplWin32_GetDpiScaleForMonitor(::MonitorFromPoint(POINT{ 0, 0 }, MONITOR_DEFAULTTOPRIMARY));
 
+
 	// initialize ImGui
 	IMGUI_CHECKVERSION();
 	ImGui::CreateContext();
@@ -48,7 +49,6 @@ int main()
 
 	ImGui::Text("This is some useful text.");
 	ImGui::End();
-
 	ImGui::Render();
 
 	// Cleanup
