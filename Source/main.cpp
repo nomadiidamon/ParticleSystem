@@ -5,6 +5,7 @@ int main()
 {
 	std::cout << "Hello, World!\n" << std::endl;
 
+	ImGui::CreateContext();
 	ImGui::Begin("Hello, world!");
 
 	bool active = true;
