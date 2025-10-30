@@ -10,6 +10,8 @@ int main()
 	// initialize ImGui
 	IMGUI_CHECKVERSION();
 	ImGui::CreateContext();
+	ImGuiIO& io = ImGui::GetIO(); (void)io;
+
 
 	// start a frame
 	ImGui::NewFrame();
