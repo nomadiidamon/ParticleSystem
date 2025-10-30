@@ -7,5 +7,7 @@ int main()
 {
 	std::cout << "Hello, World!\n" << std::endl;
 
+	ImGui::Begin("Hello!");
+
 	return -1; // failed to create Gateware application
 }
