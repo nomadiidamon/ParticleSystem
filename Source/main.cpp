@@ -7,7 +7,23 @@ int main()
 {
 	std::cout << "Hello, World!\n" << std::endl;
 
+	// initialize ImGui
+	IMGUI_CHECKVERSION();
+	ImGui::CreateContext();
+
+	// start a frame
+	ImGui::NewFrame();
+
+	// create a window
 	ImGui::Begin("Hello!");
 
-	return -1; // failed to create Gateware application
+	ImGui::Text("This is some useful text.");
+	ImGui::End();
+
+	ImGui::Render();
+
+	// Cleanup
+	ImGui::DestroyContext();
+
+	return 0;
 }
