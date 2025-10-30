@@ -5,15 +5,7 @@ int main()
 {
 	std::cout << "Hello, World!\n" << std::endl;
 
-	ImGui::CreateContext();
-	ImGui::Begin("Hello, world!");
-
-	bool active = true;
-	while (active)
-	{
-		// run the app
-		ImGui::NewFrame();
-	}
+	ImGui::ShowAboutWindow();
 
 	//App app;
 	return -1; // failed to create Gateware application
