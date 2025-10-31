@@ -12,13 +12,15 @@ int main()
 	entt::registry registry;
     CCL::InitializeComponentLogic(registry);
 
+    // 3D Content Creation reference
 	APP::DefaultApp defaultApp;
+    
+	// Particle System Application
     APP::ParticleSystemApp psApp("Particle System", 100, 100, 1280, 720, GWindowStyle::WINDOWEDBORDERED, registry);
     psApp.Run();
 
 
     // clear all entities and components from the registry
-    // invokes on_destroy() for all components that have it
     registry.clear();
     return 0;
 }
