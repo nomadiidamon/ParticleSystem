@@ -1,5 +1,6 @@
 #ifndef DRAW_COMPONENTS_H
 #define DRAW_COMPONENTS_H
+#include "../CAMERA/Camera.h"
 
 
 namespace DRAW
@@ -85,9 +86,10 @@ namespace DRAW
 	};
 
 
-	struct Camera
+	struct CameraComponent
 	{
-		GW::MATH::GMATRIXF camMatrix;
+		Camera camera;
+		//GW::MATH::GMATRIXF camMatrix;
 	};	
 
 	struct CPULevel {

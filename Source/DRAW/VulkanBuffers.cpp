@@ -210,8 +210,16 @@ namespace DRAW
 
 		// TODO : Update Dynamic parts of the Scene Data here
 		// We really only support one camera, so use the first one
-		auto& camera = registry.get<Camera>(registry.view<Camera>().front());
+		//auto& camera = registry.get<Camera>(registry.view<Camera>().front());
+		auto camView = registry.view<Camera>();
+		if (camView.empty()) {
 
+			unsigned int frame;
+			renderer.vlkSurface.GetSwapchainCurrentImage(frame);
+			GvkHelper::write_to_buffer(renderer.device, gpuBuffer.memory[frame], &data, sizeof(SceneData));
+			return; // No camera, nothing to update
+		}
+		auto& camera = camView.get<Camera>(*(camView.begin()));
 		data.camPos = camera.camMatrix.row4;
 		GW::MATH::GMatrix::InverseF(camera.camMatrix, data.viewMatrix);
 

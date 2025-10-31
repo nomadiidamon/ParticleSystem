@@ -45,10 +45,20 @@ namespace APP
 		
 	}
 
+	inline void Destroy_Window(entt::registry& registry, entt::entity entity) {
+		// Clean
+		if (registry.any_of<GW::SYSTEM::GWindow>(entity)) {
+			auto& win = registry.get<GW::SYSTEM::GWindow>(entity);
+			win.Relinquish();
+			registry.remove<GW::SYSTEM::GWindow>(entity);
+		}
+	}
+
 	// Use this MACRO to connect the EnTT Component Logic
 	CONNECT_COMPONENT_LOGIC() {
 		// register the Window component's logic
 		registry.on_construct<Window>().connect<Construct_Window>();
 		registry.on_update<Window>().connect<Update_Window>();
+		registry.on_destroy<Window>().connect<Destroy_Window>();
 	}
 } // namespace APP

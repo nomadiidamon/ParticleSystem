@@ -23,6 +23,12 @@ namespace APP {
 		AppUpdateStatus m_updateStatus;
 		AppUpdateStatus m_fixedUpdateStatus;
 
+		/// add to appData?
+		std::string levelPath, modelFolder;
+		std::string vertShader, pixelShader;
+
+
+
 		float m_FixedInterval = 0.02f; // 50 FPS
 		float m_backgroundInterval = 0.1f; // 10 FPS
 

@@ -6,9 +6,19 @@ Camera::Camera()
 	camMatrix = GW::MATH::GIdentityMatrixF;
 }
 
+Camera::Camera(GW::MATH::GMATRIXF initialMatrix)
+{
+	camMatrix = initialMatrix;
+}
+
 Camera::~Camera()
 {
 
+}
+
+void Camera::EnableFreeLook(bool _enable)
+{
+	FreeLookEnabled = _enable;
 }
 
 GW::MATH::GMATRIXF Camera::FreeLookCamera(GW::SYSTEM::GWindow _window,
