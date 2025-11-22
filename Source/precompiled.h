@@ -48,7 +48,7 @@ using namespace GRAPHICS;
 #ifdef _WIN32 // must use MT platform DLL libraries on windows
 #pragma comment(lib, "shaderc_combined.lib") 
 #endif
-#include "CCL.h"
-#include "UTIL/h2bParser.h"
-#include "UTIL/load_data_oriented.h"
-#include "UTIL/XTime.h"
+#include "APP/Engine/Utils/CCL.h"
+#include "APP/Engine/Utils/h2bParser.h"
+#include "APP/Engine/Utils/load_data_oriented.h"
+#include "APP/Engine/Utils/XTime.h"

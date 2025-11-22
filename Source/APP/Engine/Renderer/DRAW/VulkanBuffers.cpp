@@ -1,5 +1,4 @@
 #include "DrawComponents.h"
-#include "../CCL.h"
 namespace DRAW
 {
 	//*** HELPERS ***//

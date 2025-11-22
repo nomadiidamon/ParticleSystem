@@ -1,6 +1,7 @@
 #ifndef DRAW_COMPONENTS_H
 #define DRAW_COMPONENTS_H
-#include "../CAMERA/Camera.h"
+#include "../../Camera/Camera.h"
+#include "../../Utils/Iuvo/IuvoUtils.h"
 
 
 namespace DRAW
@@ -9,6 +10,9 @@ namespace DRAW
 	struct DoNotRenderTag {
 
 	};
+
+	struct ParticleRenderTag {};
+
 
 
 	//*** COMPONENTS ***//
@@ -21,7 +25,13 @@ namespace DRAW
 		float fovDegrees;
 		float nearPlane;
 		float farPlane;
+		VkSampleCountFlagBits msaaSamples = VK_SAMPLE_COUNT_1_BIT;
+		std::string computeShaderName;
+		bool enableAnisotropy = true;
+		bool useComputeParticles = true;
 	};
+
+
 
 	struct VulkanRenderer
 	{
@@ -38,7 +48,60 @@ namespace DRAW
 		VkDescriptorPool descriptorPool = nullptr;
 		std::vector<VkDescriptorSet> descriptorSets;
 		VkClearValue clrAndDepth[2];
+
+		std::vector<VkFramebuffer> framebuffers;
+		VkSwapchainKHR swapchain = VK_NULL_HANDLE;
+		std::vector<VkImage> swapchainImages;
+		std::vector<VkImageView> swapchainImageViews;
+
+		VkCommandPool commandPool = VK_NULL_HANDLE;
+		std::vector<VkCommandBuffer> commandBuffers;
+
+		VkSemaphore imageAvailableSemaphore;
+		VkSemaphore renderFinishedSemaphore;
+		VkFence inFlightFence;
+		bool imguiInitialized = false;
+		float startTime = 0.0f;
+		int currentFrameIndex = 0;
 	};
+
+
+
+	struct VulkanDescriptor
+	{
+		VkDescriptorSetLayout layout;
+		VkDescriptorPool pool;
+		std::vector<VkDescriptorSet> sets;
+	};
+
+	struct VulkanParticleBuffer {
+		VkBuffer buffer = VK_NULL_HANDLE;
+		VkDeviceMemory memory = VK_NULL_HANDLE;
+		uint32_t maxParticles = 10;
+	};
+
+	struct VulkanComputePipeline {
+		VkPipeline pipeline = VK_NULL_HANDLE;
+		VkPipelineLayout layout = VK_NULL_HANDLE;
+		VkShaderModule computeShader = VK_NULL_HANDLE;
+		VkDescriptorSetLayout descriptorSetLayout = VK_NULL_HANDLE;
+		VkDescriptorSet descriptorSet = VK_NULL_HANDLE;
+	};
+
+	struct Particle {
+		GW::MATH::GVECTORF position;
+		GW::MATH::GVECTORF velocity;
+		float lifetime = 5.0f;
+		float age = 0.0f;
+	};
+
+	struct VulkanParticleStorage {
+		VkBuffer buffer;
+		VkDeviceMemory memory;
+		uint32_t count;
+	};
+
+
 
 	struct VulkanVertexBuffer
 	{
@@ -77,12 +140,25 @@ namespace DRAW
 	{
 		GW::MATH::GVECTORF sunDirection, sunColor, sunAmbient, camPos;
 		GW::MATH::GMATRIXF viewMatrix, projectionMatrix;
+		float deltaTime = 0.0f;
+		float totalTime = 0.0f;
+		uint32_t frameIndex;
+		GW::MATH::GMATRIXF viewProjection;
 	};
 
 	struct VulkanUniformBuffer
 	{
 		std::vector<VkBuffer> buffer;
 		std::vector<VkDeviceMemory> memory;
+		uint32_t alignedSize;
+		uint32_t bufferCount;
+	};
+
+	struct VulkanTexture {
+		VkImage image;
+		VkDeviceMemory memory;
+		VkImageView view;
+		VkSampler sampler;
 	};
 
 
@@ -90,6 +166,8 @@ namespace DRAW
 	{
 		Camera camera;
 		//GW::MATH::GMATRIXF camMatrix;
+		bool enableBillboarding = true;
+
 	};	
 
 	struct CPULevel {

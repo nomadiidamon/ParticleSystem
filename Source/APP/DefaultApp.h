@@ -1,6 +1,6 @@
 #pragma once
 #include "../precompiled.h"
-#include "../Renderer.h"
+#include "../Renderer_solo.h"
 
 
 namespace APP {

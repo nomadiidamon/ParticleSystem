@@ -1,6 +1,7 @@
 #pragma once
-#include "../precompiled.h"
-#include "../UTIL/UniversalComponents.h"
+#include "../../../precompiled.h"
+#include "../../Utils/UniversalComponents.h"
+#include "../DRAW/DrawComponents.h"
 
 namespace PARTICLE {
 	using namespace UNIVERSAL;

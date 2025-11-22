@@ -1,6 +1,6 @@
 #include "DrawComponents.h"
-#include "../PARTICLE/ParticleComponents.h"
-#include "../PARTICLE/ParticleSystemComponents.h"
+#include "../../Particle/ParticleComponents.h"
+#include "../../Particle/ParticleSystemComponents.h"
 
 namespace DRAW
 {

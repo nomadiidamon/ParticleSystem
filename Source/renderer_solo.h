@@ -1,6 +1,6 @@
 #pragma once
-#include "UTIL/Iuvo/IuvoUtils.h"
-#include "Camera/Camera.h"
+#include "APP/Engine/Utils/Iuvo/IuvoUtils.h"
+#include "APP/Engine/Camera/Camera.h"
 
 
 class Renderer
