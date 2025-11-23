@@ -10,12 +10,13 @@ namespace Engine {
         Engine(entt::registry& registry);
         ~Engine();
         void Update(float deltaTime);
+        void Init();
+        void Shutdown();
+        void CleanupEntities();
+        entt::registry& m_registry;
 
     private:
-        entt::registry& m_registry;
-        void Init();
-        void CleanupEntities();
-        void Shutdown();
+		bool m_isInitialized = false;
     };
 
 } // namespace UNIVERSAL

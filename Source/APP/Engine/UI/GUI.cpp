@@ -36,5 +36,9 @@ namespace Engine {
 		{
 		}
 
+		CONNECT_COMPONENT_LOGIC() {
+
+		}
+
 	} // namespace GUI
 }

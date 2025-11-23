@@ -4,12 +4,12 @@
 #include "APP/ParticleSystemApp.h"
 #include "precompiled.h"
 
+static entt::registry registry;
 
 int main()
 {
 	Iuvo::MemoryNet(); // check for memory leaks
 
-	entt::registry registry;
     CCL::InitializeComponentLogic(registry);
 
     // 3D Content Creation reference

@@ -27,6 +27,15 @@ namespace APP {
 		vertShader = "../Shaders/ModelBased/LevelVertex.hlsl";
 		pixelShader = "../Shaders/ModelBased/LevelPixel.hlsl";
 
+		entt::entity appEntity = m_registry->create();
+		m_registry->emplace<APP::ParticleSystemApp>(appEntity, *this);
+		m_registry->emplace<Engine::Engine>(appEntity, Engine::Engine(*m_registry));
+		m_registry->emplace<Engine::UI::GUIManager>(appEntity, Engine::UI::GUIManager(*m_registry));
+		DRAW::VulkanRendererInitialization initData{
+			vertShader, pixelShader,
+			{ {0.2f, 0.2f, 0.25f, 1} } , { 1.0f, 0u }, 75.f, 0.1f, 100.0f
+		};
+		m_registry->emplace<Engine::Renderer>(appEntity, Engine::Renderer(*m_registry, initData));
 	}
 
 	ParticleSystemApp::~ParticleSystemApp() {
@@ -34,7 +43,6 @@ namespace APP {
 	}
 
 	void ParticleSystemApp::Run() {
-
 		GraphicsBehavior(*m_registry); // create windows, surfaces, and renderers
 		GameplayBehavior(*m_registry); // create entities and components for gameplay
 		MainLoopBehavior(*m_registry); // update windows and input
@@ -112,9 +120,18 @@ namespace APP {
 
 		int closedCount = 0; // count of closed windows
 		auto winView = registry.view<APP::Window>(); // for updating all windows
-		do 
-		{ 
-			MainLoopIteration(registry); 
+		do
+		{
+			MainLoopIteration(registry);
+
+			// update Engine component
+			auto& engines = m_registry->view<Engine::Engine>();
+			if (engines.size_hint() != (size_t)0) {
+				for (auto& engine : engines) {
+					m_registry->patch<Engine::Engine>(engine);
+				}
+			}
+
 			// find all Windows that are not closed and call "patch" to update them
 			for (auto entity : winView) {
 				if (registry.any_of<APP::WindowClosed>(entity))
@@ -122,8 +139,7 @@ namespace APP {
 				else
 					registry.patch<APP::Window>(entity); // calls on_update()
 			}
-		} 
-		while (winView.size() != closedCount);
+		} while (winView.size() != closedCount);
 
 		std::cout << "Shutting Down Particle System!" << std::endl;
 	}
@@ -131,6 +147,7 @@ namespace APP {
 	int ParticleSystemApp::Update(entt::registry& registry) {
 		//std::cout << "Running Base Update" << std::endl;
 		if (m_IsRunning == false) {
+
 			return -1; // exit code
 		}
 		return 0;
@@ -174,7 +191,7 @@ namespace APP {
 			auto& winView = registry.view<APP::Window>();
 			winView.each([&](auto entity, APP::Window& windowComp) {
 				registry.emplace<APP::WindowClosed>(entity);
-				});	
+				});
 		}
 		int status_U = Update(registry);
 		int status_FU = FixedUpdate(registry);

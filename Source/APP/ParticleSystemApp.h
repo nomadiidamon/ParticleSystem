@@ -2,6 +2,8 @@
 #include "AppData.h"
 #include "Window.hpp"
 #include "../precompiled.h"
+#include "../APP/Engine/Engine.h"
+#include "../APP/Engine/UI/GUI.h"
 
 namespace APP {
 

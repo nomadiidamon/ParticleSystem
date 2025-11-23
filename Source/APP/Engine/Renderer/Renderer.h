@@ -10,6 +10,9 @@ namespace Engine {
         Renderer(entt::registry& registry, VulkanRendererInitialization& init);
         void RenderFrame(float deltaTime);
         VulkanRenderer& GetVulkanRenderer();
+
+        /// TODO: Connect component logic
+
     private:
         entt::registry& m_registry;
         VulkanRendererInitialization& m_initData;

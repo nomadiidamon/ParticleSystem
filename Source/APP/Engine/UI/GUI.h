@@ -12,6 +12,9 @@ namespace Engine {
 			void Update(float deltaTime);
 			void RenderFrame(float deltaTime);
 
+			/// TODO: Connect component logic
+
+
 		private:
 			entt::registry& m_registry;
 			void Init();
