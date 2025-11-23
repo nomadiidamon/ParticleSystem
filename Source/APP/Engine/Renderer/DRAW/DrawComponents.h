@@ -1,7 +1,7 @@
 #ifndef DRAW_COMPONENTS_H
 #define DRAW_COMPONENTS_H
 #include "../../Camera/Camera.h"
-#include "../../Utils/Iuvo/IuvoUtils.h"
+#include "../../Utils/IuvoUtils.h"
 
 
 namespace DRAW
@@ -63,6 +63,7 @@ namespace DRAW
 		bool imguiInitialized = false;
 		float startTime = 0.0f;
 		int currentFrameIndex = 0;
+		VkDescriptorPool imguiDescriptorPool = VK_NULL_HANDLE;
 	};
 
 

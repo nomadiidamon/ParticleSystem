@@ -21,5 +21,13 @@ namespace Engine {
 
 		};
 
+		struct UILayerComponent {
+			UILayer layer;
+		};
+
+		void OnConstruct_UILayer(entt::registry& registry, entt::entity entity);
+		void OnUpdate_UILayer(entt::registry& registry, entt::entity entity);
+		void OnDestroy_UILayer(entt::registry& registry, entt::entity entity);
+
 	}
 }

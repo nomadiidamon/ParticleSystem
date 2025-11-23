@@ -30,6 +30,15 @@ using namespace CORE;
 using namespace SYSTEM;
 using namespace GRAPHICS;
 
+// ImGui
+#include "../Dependencies/Imgui/imgui.h"
+#include "../Dependencies/Imgui/imgui_impl_vulkan.h"
+#include "../Dependencies/Imgui/imgui_impl_vulkan.cpp"
+#include "../Dependencies/Imgui/imgui_impl_win32.h"
+#include "../Dependencies/Imgui/imgui_impl_win32.cpp"
+#include "../Dependencies/Imgui/imgui_internal.h" // for ImGui::GetCurrentContext()
+#include "../Dependencies/Imgui/imconfig.h"
+
 
 //// utilities
 #define IMGUI_DEFINE_MATH_OPERATORS

@@ -14,10 +14,21 @@ namespace Engine {
 		void BeginFrame();
 		void RenderEntities();
 		void EndFrame();
-		VulkanRenderer m_renderer;
+		VkInstance& GetInstance();
+		VkDevice& GetDevice();
+		VkPhysicalDevice& GetPhysicalDevice();
+		uint32_t& GetGraphicsQueueFamilyIndex();
+		VkQueue& GetGraphicsQueue();
+		VkPipelineCache& GetPipelineCache();
+		VkDescriptorPool& GetImGuiDescriptorPool();
+		uint32_t& GetMinImageCount();
+		uint32_t& GetSwapchainImageCount();
+		VkSampleCountFlags& GetMSAASamples();
+		static void CheckVk(VkResult result);
 
 
 	private:
+		VulkanRenderer m_renderer;
 		entt::registry& m_registry;
 		VulkanRendererInitialization& m_initData;
 	};
