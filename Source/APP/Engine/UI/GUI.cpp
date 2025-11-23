@@ -36,9 +36,25 @@ namespace Engine {
 		{
 		}
 
-		CONNECT_COMPONENT_LOGIC() {
-
+		void OnConstruct_GUIManager(entt::registry& registry, entt::entity entity)
+		{
 		}
+
+		void OnUpdate_GUIManager(entt::registry& registry, entt::entity entity)
+		{
+		}
+
+		void OnDestroy_GUIManager(entt::registry& registry, entt::entity entity)
+		{
+		}
+
+
+		CONNECT_COMPONENT_LOGIC() {
+			registry.on_construct<GUIManager>().connect<OnConstruct_GUIManager>();
+			registry.on_update<GUIManager>().connect<OnUpdate_GUIManager>();
+			registry.on_destroy<GUIManager>().connect<OnDestroy_GUIManager>();
+		}
+
 
 	} // namespace GUI
 }

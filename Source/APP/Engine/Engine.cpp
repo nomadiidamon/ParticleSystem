@@ -29,13 +29,8 @@ namespace Engine {
 		m_isInitialized = true;
 	}
 
-
-	void Engine::CleanupEntities() {
-
-	}
 	void Engine::Shutdown()
 	{
-		CleanupEntities();
 	}
 
 	void OnConstruct_Engine(entt::registry& registry, entt::entity entity) {

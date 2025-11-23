@@ -9,9 +9,6 @@ namespace APP {
 		// Store the registry reference
 		m_registry = &_registry;
 
-		// Initialize time
-		m_Time = XTime(100, 0.9f); // 100 samples, 0.9 smooth factor
-		m_Time.Restart();
 
 		// Set up the application window
 		m_appWindow.title = appTitle;
@@ -27,15 +24,13 @@ namespace APP {
 		vertShader = "../Shaders/ModelBased/LevelVertex.hlsl";
 		pixelShader = "../Shaders/ModelBased/LevelPixel.hlsl";
 
+		// Initialize time
+		m_Time = XTime(100, 0.9f); // 100 samples, 0.9 smooth factor
+		m_Time.Restart();
+
+		// Create the main application entity and emplace core components
 		entt::entity appEntity = m_registry->create();
-		m_registry->emplace<APP::ParticleSystemApp>(appEntity, *this);
-		m_registry->emplace<Engine::Engine>(appEntity, Engine::Engine(*m_registry));
-		m_registry->emplace<Engine::UI::GUIManager>(appEntity, Engine::UI::GUIManager(*m_registry));
-		DRAW::VulkanRendererInitialization initData{
-			vertShader, pixelShader,
-			{ {0.2f, 0.2f, 0.25f, 1} } , { 1.0f, 0u }, 75.f, 0.1f, 100.0f
-		};
-		m_registry->emplace<Engine::Renderer>(appEntity, Engine::Renderer(*m_registry, initData));
+		m_registry->emplace<APP::ParticleSystemApp>(appEntity, *this);		
 	}
 
 	ParticleSystemApp::~ParticleSystemApp() {
@@ -46,6 +41,11 @@ namespace APP {
 		GraphicsBehavior(*m_registry); // create windows, surfaces, and renderers
 		GameplayBehavior(*m_registry); // create entities and components for gameplay
 		MainLoopBehavior(*m_registry); // update windows and input
+	}
+
+	XTime& ParticleSystemApp::GetTime()
+	{
+		return m_Time;
 	}
 
 	// Set up graphics entities and components
@@ -107,11 +107,25 @@ namespace APP {
 		GW::MATH::GMatrix::InverseF(initialCamera, initialCamera);
 		registry.emplace<DRAW::CameraComponent>(display,
 			DRAW::CameraComponent{ initialCamera });
+
+
+		// Initialize the Renderer and GUI Manager components
+		/// TODO: move time saving from renderer to Time entity/component
+		DRAW::VulkanRendererInitialization initData{
+			vertShader, pixelShader,
+			{ {0.2f, 0.2f, 0.25f, 1} } , { 1.0f, 0u }, 75.f, 0.1f, 100.0f
+		};
+
+		/// TODO: check valid entity for these 
+		m_registry->emplace<Engine::Renderer>(display, Engine::Renderer(*m_registry, initData)); // currently OnConstruct calls rend.init which sets time
+		m_registry->emplace<Engine::UI::GUIManager>(display, Engine::UI::GUIManager(*m_registry));
 	}
 
 	/// Set up gameplay entities and components
 	void ParticleSystemApp::GameplayBehavior(entt::registry& registry) {
 		std::cout << "Gameplay Initialized!" << std::endl;
+		auto appEntity = registry.view<APP::ParticleSystemApp>().front();
+		m_registry->emplace<Engine::Engine>(appEntity, Engine::Engine(*m_registry));
 	}
 
 	// Main loop behavior: update windows and input

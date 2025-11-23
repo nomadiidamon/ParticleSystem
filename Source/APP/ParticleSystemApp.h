@@ -38,7 +38,7 @@ namespace APP {
 		ParticleSystemApp(std::string appTitle, int xPos, int yPos, int width, int height, GWindowStyle windowMode, entt::registry& _registry);
 		~ParticleSystemApp();
 		void Run();
-
+		XTime& GetTime();
 		void GraphicsBehavior(entt::registry& registry);
 		void GameplayBehavior(entt::registry& registry);
 		void MainLoopBehavior(entt::registry& registry);

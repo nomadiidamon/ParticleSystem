@@ -1,5 +1,6 @@
 #pragma once
 #include "../../../precompiled.h"
+#include "../../ParticleSystemApp.h"
 #include "Renderer.h"
 
 namespace Engine {
@@ -19,10 +20,10 @@ namespace Engine {
 		return m_renderer;
 	}
 
-
-
 	void Renderer::InitializeRenderer()
 	{
+		auto& app = m_registry.get<APP::ParticleSystemApp>(m_registry.view<APP::ParticleSystemApp>().front());
+		m_renderer.startTime = app.GetTime().TotalTime();
 	}
 
 	void Renderer::BeginFrame() {
@@ -37,8 +38,29 @@ namespace Engine {
 
 	}
 
-	CONNECT_COMPONENT_LOGIC() {
+	void OnConstruct_Renderer(entt::registry& registry, entt::entity entity)
+	{
+		auto& renderer = registry.get<Renderer>(entity);
+		renderer.InitializeRenderer();
+	}
 
+	void OnUpdate_Renderer(entt::registry& registry, entt::entity entity)
+	{
+		auto& renderer = registry.get<Renderer>(entity);
+		renderer.RenderFrame(0.0f); // Pass deltaTime if available
+	}
+
+	void OnDestroy_Renderer(entt::registry& registry, entt::entity entity)
+	{
+		// Cleanup logic if needed
+	}
+
+
+
+	CONNECT_COMPONENT_LOGIC() {
+		registry.on_construct<Renderer>().connect<OnConstruct_Renderer>();
+		registry.on_update<Renderer>().connect<OnUpdate_Renderer>();
+		registry.on_destroy<Renderer>().connect<OnDestroy_Renderer>();
 	}
 
 }

@@ -15,6 +15,15 @@ namespace UNIVERSAL {
 	struct LightTag {}; // Used to mark entities that represent lights
 
 	///*** Components ***///
+	struct IDComponent {
+		uint32_t id;
+	};
+
+	/*struct GUID {
+		string? value;
+		uint32_Long? mostSignificantBits;
+	}*/
+
 	struct NameComponent {
 		std::string name;
 	};
@@ -33,4 +42,7 @@ namespace UNIVERSAL {
 		GW::MATH::GVECTORF endColor;
 		GW::MATH::GVECTORF currentColor;
 	};
+
+
+
 }

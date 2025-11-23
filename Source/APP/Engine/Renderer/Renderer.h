@@ -5,22 +5,24 @@
 namespace Engine {
 	using namespace DRAW;
 
-    class Renderer {
-    public:
-        Renderer(entt::registry& registry, VulkanRendererInitialization& init);
-        void RenderFrame(float deltaTime);
-        VulkanRenderer& GetVulkanRenderer();
-
-        /// TODO: Connect component logic
-
-    private:
-        entt::registry& m_registry;
-        VulkanRendererInitialization& m_initData;
-        VulkanRenderer m_renderer;
+	class Renderer {
+	public:
+		Renderer(entt::registry& registry, VulkanRendererInitialization& init);
+		void RenderFrame(float deltaTime);
+		VulkanRenderer& GetVulkanRenderer();
 		void InitializeRenderer();
-        void BeginFrame();
-        void RenderEntities();
-        void EndFrame();
-    };
+		void BeginFrame();
+		void RenderEntities();
+		void EndFrame();
+		VulkanRenderer m_renderer;
+
+
+	private:
+		entt::registry& m_registry;
+		VulkanRendererInitialization& m_initData;
+	};
+	void OnConstruct_Renderer(entt::registry& registry, entt::entity entity);
+	void OnUpdate_Renderer(entt::registry& registry, entt::entity entity);
+	void OnDestroy_Renderer(entt::registry& registry, entt::entity entity);
 
 } // namespace DRAW

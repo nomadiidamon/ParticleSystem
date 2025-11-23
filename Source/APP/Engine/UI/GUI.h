@@ -11,19 +11,21 @@ namespace Engine {
 			~GUIManager();
 			void Update(float deltaTime);
 			void RenderFrame(float deltaTime);
-
-			/// TODO: Connect component logic
+			void Init();
 
 
 		private:
 			entt::registry& m_registry;
-			void Init();
-			void Shutdown();
 
+			void Shutdown();
 			void BeginFrame();
 			void RenderGUI();
 			void EndFrame();
 		};
+
+		void OnConstruct_GUIManager(entt::registry& registry, entt::entity entity);
+		void OnUpdate_GUIManager(entt::registry& registry, entt::entity entity);
+		void OnDestroy_GUIManager(entt::registry& registry, entt::entity entity);
 	} // namespace GUI
 
 }
