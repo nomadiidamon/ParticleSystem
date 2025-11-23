@@ -118,7 +118,6 @@ namespace APP {
 
 		/// TODO: check valid entity for these 
 		m_registry->emplace<Engine::Renderer>(display, Engine::Renderer(*m_registry, initData)); // currently OnConstruct calls rend.init which sets time
-		m_registry->emplace<Engine::UI::GUIManager>(display, Engine::UI::GUIManager(*m_registry));
 	}
 
 	/// Set up gameplay entities and components

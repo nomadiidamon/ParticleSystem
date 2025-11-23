@@ -4,6 +4,56 @@
 
 namespace DRAW
 {
+
+	VkInstance& VulkanRenderer::GetInstance()
+	{
+		VkInstance* instance = nullptr;
+		vlkSurface.GetInstance((void**)instance);
+		return *instance;
+	}
+
+	uint32_t& VulkanRenderer::GetGraphicsQueueFamilyIndex()
+	{
+		uint32_t* queueFamilyIndexPtr = nullptr;
+		uint32_t _ = 0;
+		vlkSurface.GetQueueFamilyIndices(*queueFamilyIndexPtr, _);
+		return *queueFamilyIndexPtr;
+
+	}
+
+	VkQueue& VulkanRenderer::GetGraphicsQueue()
+	{
+		VkQueue* graphicsQueuePtr = nullptr;
+		vlkSurface.GetGraphicsQueue((void**)graphicsQueuePtr);
+		return *graphicsQueuePtr;
+	}
+
+
+	VkDescriptorPool& VulkanRenderer::GetImGuiDescriptorPool()
+	{
+		return imguiPool;
+	}
+
+	uint32_t& VulkanRenderer::GetMinImageCount()
+	{
+		return minImageCount;
+	}
+
+	uint32_t& VulkanRenderer::GetSwapchainImageCount()
+	{
+		return swapchainImageCount;
+	}
+
+	VkSampleCountFlags VulkanRenderer::GetMSAASamples()
+	{
+		return VK_SAMPLE_COUNT_1_BIT;
+
+	}
+
+	void VulkanRenderer::CheckVk(VkResult result)
+	{
+	}
+
 	void Construct_CPULevel(entt::registry& registry, entt::entity entity) {
 
 		auto& cpuLevel = registry.get<CPULevel>(entity);

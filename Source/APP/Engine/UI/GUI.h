@@ -19,6 +19,7 @@ namespace Engine {
 		private:
 			entt::registry& m_registry;
 			std::vector<UILayer*> m_uiLayers;
+			bool m_isInitialized = false;
 
 			void BeginFrame();
 			void RenderGUI();

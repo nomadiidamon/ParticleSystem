@@ -14,17 +14,7 @@ namespace Engine {
 		void BeginFrame();
 		void RenderEntities();
 		void EndFrame();
-		VkInstance& GetInstance();
-		VkDevice& GetDevice();
-		VkPhysicalDevice& GetPhysicalDevice();
-		uint32_t& GetGraphicsQueueFamilyIndex();
-		VkQueue& GetGraphicsQueue();
-		VkPipelineCache& GetPipelineCache();
-		VkDescriptorPool& GetImGuiDescriptorPool();
-		uint32_t& GetMinImageCount();
-		uint32_t& GetSwapchainImageCount();
-		VkSampleCountFlags& GetMSAASamples();
-		static void CheckVk(VkResult result);
+
 
 
 	private:

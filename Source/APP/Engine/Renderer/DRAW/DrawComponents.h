@@ -60,10 +60,20 @@ namespace DRAW
 		VkSemaphore imageAvailableSemaphore;
 		VkSemaphore renderFinishedSemaphore;
 		VkFence inFlightFence;
-		bool imguiInitialized = false;
 		float startTime = 0.0f;
 		int currentFrameIndex = 0;
-		VkDescriptorPool imguiDescriptorPool = VK_NULL_HANDLE;
+		bool imguiInitialized = false;
+		VkDescriptorPool imguiPool = VK_NULL_HANDLE;
+		uint32_t minImageCount = 2;
+		uint32_t swapchainImageCount = 2;
+		VkInstance& GetInstance();
+		uint32_t& GetGraphicsQueueFamilyIndex();
+		VkQueue& GetGraphicsQueue();
+		VkDescriptorPool& GetImGuiDescriptorPool();
+		uint32_t& GetMinImageCount();
+		uint32_t& GetSwapchainImageCount();
+		VkSampleCountFlags GetMSAASamples();
+		static void CheckVk(VkResult result);
 	};
 
 
