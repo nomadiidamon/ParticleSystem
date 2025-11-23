@@ -6,6 +6,7 @@
 namespace Engine {
 
 	namespace UI {
+		/// TODO: Convert this class to a particle system Editor
 		class GUIManager {
 		public:
 			GUIManager(entt::registry& registry);

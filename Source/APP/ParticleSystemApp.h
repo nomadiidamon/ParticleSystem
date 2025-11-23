@@ -14,6 +14,7 @@ namespace APP {
 		GW::CORE::GEventCache m_pressEvents;
 	};
 
+	/// TODO: Add app to registry context
 	class ParticleSystemApp {
 		XTime m_Time;
 		float m_AccumulatedTime = 0.0f;
@@ -44,7 +45,10 @@ namespace APP {
 		void MainLoopBehavior(entt::registry& registry);
 	private:
 		void MainLoopIteration(entt::registry& registry);
+
+		/// TODO: Move to Engine::Engine
 		int Update(entt::registry& registry);
+		/// TODO: Move to Engine::Engine
 		int FixedUpdate(entt::registry& registry);
 
 	};

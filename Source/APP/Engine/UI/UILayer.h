@@ -3,6 +3,7 @@
 
 namespace Engine {
 	namespace UI {
+		/// TODO: Convert this class to a particle system editor layer
 		class UILayer {
 		public:
 			UILayer(entt::registry& registry);

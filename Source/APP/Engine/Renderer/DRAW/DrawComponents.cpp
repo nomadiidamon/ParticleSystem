@@ -47,7 +47,6 @@ namespace DRAW
 	VkSampleCountFlags VulkanRenderer::GetMSAASamples()
 	{
 		return VK_SAMPLE_COUNT_1_BIT;
-
 	}
 
 	void VulkanRenderer::CheckVk(VkResult result)

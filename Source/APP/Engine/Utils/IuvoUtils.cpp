@@ -32,36 +32,36 @@ namespace Iuvo
 		_CrtDumpMemoryLeaks();
 	}
 
-	static bool FloatEquals(float a, float b) {
+	bool FloatEquals(float a, float b) {
 		return fabsf(a - b) <= EPS;
 	}
 	inline float DegToRad(float d) { return d * (PI_F / 180.0f); }
 
-	static std::mt19937& GetRNG() {
+	std::mt19937& GetRNG() {
 		static std::random_device rd;
 		static std::mt19937 mt(rd());
 		return mt;
 	}
-	static float RandFloat(float a, float b) {
+	float RandFloat(float a, float b) {
 		std::uniform_real_distribution<float> dist(a, b);
 		return dist(GetRNG());
 	}
-	static int RandInt(int a, int b) {
+	int RandInt(int a, int b) {
 		std::uniform_int_distribution<int> dist(a, b);
 		return dist(GetRNG());
 	}
 
-	static bool RandBool(float trueProbability = 0.5f) {
+	bool RandBool(float trueProbability = 0.5f) {
 		std::bernoulli_distribution dist(trueProbability);
 		return dist(GetRNG());
 	}
 
-	static unsigned char RandChar() {
+	unsigned char RandChar() {
 		std::uniform_int_distribution<int> dist(0, 255);
 		return static_cast<unsigned char>(dist(GetRNG()));
 	}
 
-	static std::string GenerateHex(const unsigned int length) {
+	std::string GenerateHex(const unsigned int length) {
 		const char hexChars[] = "0123456789ABCDEF";
 		std::string hexString;
 		hexString.reserve(length);
@@ -71,7 +71,7 @@ namespace Iuvo
 		return hexString;
 	}
 
-	static std::string GenerateUUID() {
+	std::string GenerateUUID() {
 		return GenerateHex(8)
 			+ "-" + GenerateHex(4)
 			+ "-" + GenerateHex(4)

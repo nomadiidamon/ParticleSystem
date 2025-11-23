@@ -52,6 +52,8 @@ namespace Engine {
 	{
 		auto& renderer = registry.get<Renderer>(entity);
 		renderer.RenderFrame(0.0f);
+
+		/// TODO: Get all renderable targets and render them
 	}
 
 	void OnDestroy_Renderer(entt::registry& registry, entt::entity entity)

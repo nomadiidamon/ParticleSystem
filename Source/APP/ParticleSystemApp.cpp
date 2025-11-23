@@ -30,7 +30,7 @@ namespace APP {
 
 		// Create the main application entity and emplace core components
 		entt::entity appEntity = m_registry->create();
-		m_registry->emplace<APP::ParticleSystemApp>(appEntity, *this);		
+		m_registry->emplace<APP::ParticleSystemApp>(appEntity, *this);
 	}
 
 	ParticleSystemApp::~ParticleSystemApp() {
@@ -65,6 +65,23 @@ namespace APP {
 			std::cerr << "Failed to create application window!" << std::endl;
 			m_IsRunning = false;
 		}
+
+		// create a secondary test window for ImGui
+		entt::entity imguiWindow = registry.create();
+		APP::Window_Vk_ImGui imguiWinComp;
+		imguiWinComp.title = "ImGui Window";
+		imguiWinComp.x = m_appWindow.x + m_appWindow.width / 2;
+		imguiWinComp.y = m_appWindow.y;
+		imguiWinComp.width = 400;
+		imguiWinComp.height = 400;
+		imguiWinComp.style = GW::SYSTEM::GWindowStyle::WINDOWEDBORDERED;
+		registry.emplace<Window_Vk_ImGui>(imguiWindow, imguiWinComp);
+		auto& imguiWindowComp = m_registry->get<GW::SYSTEM::GWindow>(imguiWindow);
+		if (!imguiWindowComp) {
+			std::cerr << "Failed to create ImGui window!" << std::endl;
+			m_IsRunning = false;
+		}
+
 		m_input.m_input.Create(windowComp);
 		m_input.m_bufferedInput.Create(windowComp);
 		m_input.m_gamepad.Create();
@@ -79,6 +96,14 @@ namespace APP {
 				{ {0.2f, 0.2f, 0.25f, 1} } , { 1.0f, 0u }, 75.f, 0.1f, 100.0f });
 		registry.emplace<DRAW::VulkanRenderer>(display);
 
+		// emplace a vulkan renderer for the ImGui window as well
+		registry.emplace<DRAW::VulkanRendererInitialization>(imguiWindow,
+			DRAW::VulkanRendererInitialization{
+				vertShader, pixelShader,
+				{ {0.45f, 0.35f, 0.85f, 1} } , { 1.0f, 0u }, 75.f, 0.1f, 100.0f });
+		registry.emplace<DRAW::VulkanRenderer>(imguiWindow);
+
+
 		// TODO : Emplace GPULevel
 		registry.emplace<DRAW::GPULevel>(display);
 
@@ -92,32 +117,9 @@ namespace APP {
 			}
 			});
 		registry.get<DRAW::VulkanRenderer>(display).vlkSurface.Register(shutdown);
+		registry.get<DRAW::VulkanRenderer>(imguiWindow).vlkSurface.Register(shutdown);
 		registry.emplace<GW::CORE::GEventResponder>(display, shutdown.Relinquish());
-
-
-		// Create a camera and emplace it
-		GW::MATH::GMATRIXF initialCamera;
-		GW::MATH::GVECTORF translate = { 0.0f,  45.0f, -5.0f };
-		GW::MATH::GVECTORF lookat = { 0.0f, 0.0f, 0.0f };
-		GW::MATH::GVECTORF up = { 0.0f, 1.0f, 0.0f };
-		GW::MATH::GMatrix::TranslateGlobalF(initialCamera, translate, initialCamera);
-		GW::MATH::GMatrix::LookAtLHF(translate, lookat, up, initialCamera);
-		// Inverse to turn it into a camera matrix, not a view matrix. This will let us do
-		// camera manipulation in the component easier
-		GW::MATH::GMatrix::InverseF(initialCamera, initialCamera);
-		registry.emplace<DRAW::CameraComponent>(display,
-			DRAW::CameraComponent{ initialCamera });
-
-
-		// Initialize the Renderer and GUI Manager components
-		/// TODO: move time saving from renderer to Time entity/component
-		DRAW::VulkanRendererInitialization initData{
-			vertShader, pixelShader,
-			{ {0.2f, 0.2f, 0.25f, 1} } , { 1.0f, 0u }, 75.f, 0.1f, 100.0f
-		};
-
-		/// TODO: check valid entity for these 
-		m_registry->emplace<Engine::Renderer>(display, Engine::Renderer(*m_registry, initData)); // currently OnConstruct calls rend.init which sets time
+		registry.emplace<GW::CORE::GEventResponder>(imguiWindow, shutdown.Relinquish());
 	}
 
 	/// Set up gameplay entities and components
@@ -131,8 +133,10 @@ namespace APP {
 	void ParticleSystemApp::MainLoopBehavior(entt::registry& registry) {
 		std::cout << "MainLoop Initialized!" << std::endl;
 
-		int closedCount = 0; // count of closed windows
+		int winClosedCount = 0; // count of closed windows
+		int guiClosedCount = 0; // count of closed ImGui windows
 		auto winView = registry.view<APP::Window>(); // for updating all windows
+		auto winGUIView = registry.view<APP::Window_Vk_ImGui>(); // for updating all ImGui windows
 		do
 		{
 			MainLoopIteration(registry);
@@ -148,14 +152,33 @@ namespace APP {
 			// find all Windows that are not closed and call "patch" to update them
 			for (auto entity : winView) {
 				if (registry.any_of<APP::WindowClosed>(entity))
-					++closedCount;
+					++winClosedCount;
 				else
 					registry.patch<APP::Window>(entity); // calls on_update()
 			}
-		} while (winView.size() != closedCount);
+			for (auto entity : winGUIView) {
+				if (registry.any_of<APP::WindowClosed>(entity))
+					++guiClosedCount;
+				else
+					registry.patch<APP::Window_Vk_ImGui>(entity); // calls on_update()
+			}
+			static int testInt = 0;
+			if (testInt == 150) {
+				std::cout << "Window Count: " << winView.size() << std::endl;
+				std::cout << "Window Closed Count: " << winClosedCount << std::endl;
+				std::cout << "ImGui Window Count: " << winGUIView.size() << std::endl;
+				std::cout << "ImGui Window Closed Count: " << guiClosedCount << std::endl;
+				testInt = 0;
+			}
+			else {
+				testInt++;
+			}
+
+		} while ((winClosedCount != winView.size()));
 
 		std::cout << "Shutting Down Particle System!" << std::endl;
 	}
+
 
 	int ParticleSystemApp::Update(entt::registry& registry) {
 		//std::cout << "Running Base Update" << std::endl;
@@ -196,16 +219,7 @@ namespace APP {
 	}
 
 	void ParticleSystemApp::MainLoopIteration(entt::registry& registry) {
-		// Check for exit input (Escape key or X button on window)
-		float status_X = 0.0f;
-		m_input.m_input.GetState(G_KEY_X, status_X);
-		if (status_X > 0.0f) {
-			m_IsRunning = false;
-			auto& winView = registry.view<APP::Window>();
-			winView.each([&](auto entity, APP::Window& windowComp) {
-				registry.emplace<APP::WindowClosed>(entity);
-				});
-		}
+
 		int status_U = Update(registry);
 		int status_FU = FixedUpdate(registry);
 		m_Time.Signal();
