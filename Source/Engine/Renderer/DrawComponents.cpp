@@ -14,16 +14,7 @@ namespace DRAW
 	}
 
 	void Destroy_MeshCollection(entt::registry& registry, entt::entity entity) {
-		// Check if the entity has a MeshCollection
-		if (auto* meshCollection = registry.try_get<MeshCollection>(entity)) {
-			// Iterate through all entities in the MeshCollection
-			for (auto meshEntity : meshCollection->entitties) {
-				// Destroy each mesh entity
-				if (registry.valid(meshEntity)) {
-					registry.destroy(meshEntity);
-				}
-			}
-		}
+
 	}
 
 	CONNECT_COMPONENT_LOGIC() {
@@ -33,10 +24,6 @@ namespace DRAW
 		registry.on_destroy<MeshCollection>().connect<Destroy_MeshCollection>();
 	}
 
-	bool VulkanCoreContext::InitDevice(VkInstance instance)
-	{
-		return false;
-	}
 
 	VkShaderModule PipelineSystem::LoadShaderToRasterPipeline(const char* path, shaderc_shader_kind kind, VulkanCoreContext& core, PipelineSystem& pipeline)
 	{
@@ -100,4 +87,5 @@ namespace DRAW
 		shaderc_result_release(result); // done
 		return pipeline.computePipeline.computeShader;
 	}
+
 }

@@ -25,16 +25,17 @@ namespace APP {
 		Engine::Engine m_engine;
 
 	public:
-		ParticleSystemApp(std::string appTitle, int xPos, int yPos, int width, int height, GWindowStyle windowMode);
+		ParticleSystemApp(std::string appTitle, int xPos, int yPos, int width, int height, GWindowStyle windowMode, entt::registry& _registry);
 		~ParticleSystemApp();
 		void Run();
-		void GraphicsBehavior(entt::registry& registry);
-		void GameplayBehavior(entt::registry& registry);
-		void MainLoopBehavior(entt::registry& registry);
+		void GraphicsBehavior();
+		void GameplayBehavior();
+		void MainLoopBehavior();
 		std::string levelPath, modelFolder;
 		std::string vertShader, pixelShader, computeShader;
 		Window m_appWindow;
 		entt::entity appEntity;
+		entt::registry& registry;
 	private:
 		DRAW::RendererConfig CreateRendererInitData();
 	};

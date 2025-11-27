@@ -78,4 +78,22 @@ namespace Iuvo
 			+ "-" + GenerateHex(4)
 			+ "-" + GenerateHex(12);
 	}
+	bool IUVO_ASSERT(bool condition, const std::string& message)
+	{
+		if (!condition) {
+			std::cerr << "IUVO ASSERTION FAILED: " << message << std::endl;
+			__debugbreak();
+			return false;
+		}
+		return true;
+	}
+	bool IUVO_ASSERT(bool condition, const char* message)
+	{
+		if (!condition) {
+			std::cerr << "IUVO ASSERTION FAILED: " << message << std::endl;
+			__debugbreak();
+			return false;
+		}
+		return true;
+	}
 }

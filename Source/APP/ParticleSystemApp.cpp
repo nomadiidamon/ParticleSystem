@@ -2,19 +2,16 @@
 
 namespace APP {
 
-	ParticleSystemApp::ParticleSystemApp(std::string appTitle, int xPos, int yPos, int width, int height, GWindowStyle windowMode) {
-
-		std::cout << "Booting Up Particle System!" << std::endl;
-
+	ParticleSystemApp::ParticleSystemApp(std::string appTitle, int xPos, int yPos, int width, 
+		int height, GWindowStyle windowMode, entt::registry& _registry) 
+	: registry(_registry), m_engine(_registry)
+	{
 		m_appWindow.title = appTitle;
 		m_appWindow.x = xPos;
 		m_appWindow.y = yPos;
 		m_appWindow.width = width;
 		m_appWindow.height = height;
 		m_appWindow.style = windowMode;
-
-		auto logEntity = registry.create();
-		registry.emplace<UNIVERSAL::LogComponent>(logEntity);
 	}
 
 	ParticleSystemApp::~ParticleSystemApp() {
@@ -22,13 +19,16 @@ namespace APP {
 	}
 
 	void ParticleSystemApp::Run() {
-		GraphicsBehavior(registry); // create windows, surfaces, and renderers
-		GameplayBehavior(registry); // create entities and components for gameplay
-		MainLoopBehavior(registry); // update windows and input
+		GraphicsBehavior(); // create windows, surfaces, and renderers
+		GameplayBehavior(); // create entities and components for gameplay
+		MainLoopBehavior(); // update windows and input
 	}
 
-	void ParticleSystemApp::GraphicsBehavior(entt::registry& registry) {
-		std::cout << "Graphics Initialized!" << std::endl;
+	void ParticleSystemApp::GraphicsBehavior() {
+
+		auto logEnt = registry.view<UNIVERSAL::LogComponent>().front();
+		auto& logger = registry.get<UNIVERSAL::LogComponent>(logEnt);
+		logger.Log("App --> Initializing Graphics Behavior...");
 
 		// Create the application window component
 		appEntity = registry.create();
@@ -52,25 +52,42 @@ namespace APP {
 
 		// finally, initialize the engine
 		m_engine.Init();
+
+		logger.GreenLog("Graphics Behavior Initialized successfully");
 	}
 
 	/// Set up gameplay entities and components
-	void ParticleSystemApp::GameplayBehavior(entt::registry& registry) {
-		std::cout << "Gameplay Initialized!" << std::endl;
+	void ParticleSystemApp::GameplayBehavior() {
+		auto logEnt = registry.view<UNIVERSAL::LogComponent>().front();
+		auto& logger = registry.get<UNIVERSAL::LogComponent>(logEnt);
+		logger.Log("App --> Initializing Gameplay Behavior...");
 
+		logger.GreenLog("Gameplay Behavior Initialized successfully");
 	}
 
 	// Main loop behavior: update windows and input
-	void ParticleSystemApp::MainLoopBehavior(entt::registry& registry) {
-		std::cout << "MainLoop Initialized!" << std::endl;
+	void ParticleSystemApp::MainLoopBehavior() {
+		auto logEnt = registry.view<UNIVERSAL::LogComponent>().front();
+		auto& logger = registry.get<UNIVERSAL::LogComponent>(logEnt);
+		logger.Log("App --> Starting app loop");
 
 		int winClosedCount = 0; // count of closed windows
 		auto winView = registry.view<APP::Window>();
+
 		int engineStatus = 0;
 		do
 		{
-			engineStatus = m_engine.UpdateEngine();
+			// auto flush any queued log messages every few frames
+			if (logger.GetCount() > 2) {
+				logger.PrintLogs();
+				logger.ClearLogs();
+			}
 
+			// update the engine (which updates renderer and other systems)
+			engineStatus = m_engine.UpdateEngine();
+			if (engineStatus != 0) {
+				break; // exit app loop
+			}
 
 			// find all Windows that are not closed and call "patch" to update them
 			for (auto entity : winView) {
@@ -80,9 +97,11 @@ namespace APP {
 					registry.patch<APP::Window>(entity); // calls on_update()
 			}
 
-		} while ((winClosedCount != winView.size()) || (engineStatus != 0));
+		} while (winClosedCount != winView.size());
 
-		std::cout << "Shutting Down Particle System!" << std::endl;
+		logger.Log("App --> Exiting app loop");
+		m_engine.Shutdown();
+		logger.RedLog("Application Shutdown completed.");
 	}
 
 

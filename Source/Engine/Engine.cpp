@@ -1,13 +1,14 @@
 #pragma once
 #include "Engine.h"
 #include "../APP/Window.hpp"
+#include "../Utils/UniversalComponents.h"
 
 
 namespace Engine {
 
 
-	Engine::Engine() :
-		m_renderer(DRAW::RendererConfig())
+	Engine::Engine(entt::registry& _registry) : registry(_registry),
+		m_renderer(DRAW::RendererConfig(), _registry)
 	{
 		m_Time = XTime(100, 0.9f); // 100 samples, 0.9 smooth factor
 		m_Time.Restart();
@@ -18,42 +19,63 @@ namespace Engine {
 		Shutdown();
 	}
 
-	int Engine::UpdateEngine() {
-		int status_U = Update(registry);
-		int status_FU = FixedUpdate(registry);
-		m_Time.Signal();
-		if (status_U == -1 && status_FU == -1) {
-			m_IsRunning = false;
-			return -1; // exit code
-		}
-		return 0;
-	}
-
 	void Engine::Init()
 	{
 		if (m_isInitialized) {
 			return;
 		}
 
+		auto logEnt = registry.view<UNIVERSAL::LogComponent>().front();
+		auto& logger = registry.get<UNIVERSAL::LogComponent>(logEnt);
+		logger.Log("Engine --> Initializing Engine...");
+
 		m_renderer.InitializeRenderer();
 
-		std::cout << "Engine Initialization Logic Executed." << std::endl;
+		logger.GreenLog("Engine Initialization Completed successfully.");
 		m_isInitialized = true;
+	}
+
+	int Engine::UpdateEngine() {
+		int status_U = Update(registry);
+		int status_FU = FixedUpdate(registry);
+		m_Time.Signal();
+
+		if (status_U == -1 || status_FU == -1) {
+			auto logEnt = registry.view<UNIVERSAL::LogComponent>().front();
+			auto& logger = registry.get<UNIVERSAL::LogComponent>(logEnt);
+			if (status_U == -1) {
+				logger.RedLog("Engine::Update() requested shutdown.");
+			}
+			if (status_FU == -1) {
+				logger.RedLog("Engine::FixedUpdate() requested shutdown.");
+			}
+			m_IsRunning = false;
+			return -1; // exit code
+		}
+		return 0;
 	}
 
 	void Engine::Shutdown()
 	{
-		std::cout << "Shutting down Engine..." << std::endl;
+		UNIVERSAL::LogComponent logger;
+		logger.InitLogger(false, false);
 		/// TODO: Shutdown Renderer and other systems
-	
+		m_renderer.ShutdownRenderer(registry, logger);
+
+
+		logger.RedLog("Engine: Shutting Down Engine...");
 	}
 
-	int Engine::Update(entt::registry& registry) {
-		if (m_IsRunning == false) {
-			/// TODO: Updated Renderer and other systems
 
+	int Engine::Update(entt::registry& registry) {
+		/// TODO: Update Renderer and other systems
+		m_renderer.UpdateRenderer(registry);
+
+		// Check for exit condition
+		if (m_IsRunning == false) {
 			return -1; // exit code
 		}
+
 		return 0;
 	}
 
@@ -65,11 +87,14 @@ namespace Engine {
 
 			m_AccumulatedTime -= m_FixedInterval;
 		}
+
 		m_AccumulatedTime = fmod(m_AccumulatedTime, m_FixedInterval);
 
+		// Check for exit condition
 		if (m_IsRunning == false) {
 			return -1; // exit code
 		}
+
 		return 0;
 	}
 

@@ -25,6 +25,9 @@ namespace Iuvo {
 	static std::string GenerateHex(const unsigned int length);
 	static std::string GenerateUUID();
 
+	static bool IUVO_ASSERT(bool condition, const std::string& message);
+	static bool IUVO_ASSERT(bool condition, const char* message);
+
 	/// TODO: Create random funcs for Gateware math types
 
 } // namespace Iuvo

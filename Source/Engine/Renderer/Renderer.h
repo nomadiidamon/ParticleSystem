@@ -1,21 +1,22 @@
 #pragma once
 #include "../../precompiled.h"
 #include "DrawComponents.h"
+#include "../../Utils/UniversalComponents.h"
 
 namespace Engine {
 	using namespace DRAW;
 
 	class Renderer {
 	public:
-		Renderer(const RendererConfig& init);
+		Renderer(const RendererConfig& init, entt::registry& registry);
 		void RenderFrame(float deltaTime);
 		VulkanRenderer& GetVulkanRenderer();
 		RendererConfig& GetRendererConfig();
 
 		void InitializeRenderer();
 
-		void UpdateRenderer(entt::registry& registry, entt::entity entity);
-		void ShutdownRenderer(entt::registry& registry, entt::entity entity);
+		void UpdateRenderer(entt::registry& registry);
+		void ShutdownRenderer(entt::registry& registry, UNIVERSAL::LogComponent& logger);
 		void BeginFrame();
 		void EndFrame();
 
@@ -37,6 +38,7 @@ namespace Engine {
 
 		VulkanRenderer m_renderer;
 		RendererConfig m_initData;
+		entt::registry& registry;
 	};
 
 

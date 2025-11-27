@@ -43,8 +43,45 @@ namespace UNIVERSAL {
 		GW::MATH::GVECTORF currentColor;
 	};
 
+	enum class LogLevel {
+		LOGS,
+		WARNINGS,
+		ERRORS
+	};
+
+	struct LogEntry {
+		std::string message;
+		LogLevel level;
+	};
+
+	static const std::string logPrependText = "[LOG]: ";
+	static const std::string warningPrependText = "[WARNING]: ";
+	static const std::string errorPrependText = "[ERROR]: ";
 	struct LogComponent {
-		std::vector<std::string> logs;
+
+		std::vector<LogEntry> logs;
+		void InitLogger(bool showExamples, bool showInfo);
+		void EnableLogLevel(LogLevel level, bool enable);
+		void Log(const std::string& log);
+		void GreenLog(const std::string& log);
+		void YellowLog(const std::string& log);
+		void RedLog(const std::string& log);
+		void LogWarning(const std::string& warning);
+		void LogError(const std::string& error);
+		void AddToQueue(const LogEntry& entry);
+		void AddToQueue(const std::string& message, LogLevel level);
+		void ClearLogs();
+		void PrintLogs();
+		void PrintLogs_IgnoreLevels();
+		size_t GetCount();
+		void SetConsoleColor(WORD color);
+	private:
+		HANDLE hConsole;
+		std::map<LogLevel, bool> enabledLogLevels = {
+			{ LogLevel::LOGS, true },
+			{ LogLevel::WARNINGS, true },
+			{ LogLevel::ERRORS, true }
+		};
 	};
 
 

@@ -5,7 +5,7 @@
 
 namespace Engine {
 
-	Renderer::Renderer(const RendererConfig& init)	: m_initData(init) {	}
+	Renderer::Renderer(const RendererConfig& init, entt::registry& reg)	: m_initData(init), registry(reg) {	}
 	
 	VkViewport Renderer::CreateViewportFromWindowDimensions(unsigned int windowWidth, unsigned int windowHeight)
 	{
@@ -30,24 +30,40 @@ namespace Engine {
 	}
 	void Renderer::InitializeDescriptors()
 	{
+		auto logEnt = registry.view<UNIVERSAL::LogComponent>().front();
+		auto& logger = registry.get<UNIVERSAL::LogComponent>(logEnt);
+		logger.Log("Renderer --> Initializing Descriptors...");
 
 
+		logger.GreenLog("Descriptors Initialized successfully.");
 	}
 	void Renderer::InitializeGraphicsPipeline()
 	{	 
-		
+		auto logEnt = registry.view<UNIVERSAL::LogComponent>().front();
+		auto& logger = registry.get<UNIVERSAL::LogComponent>(logEnt);
+		logger.Log("Renderer --> Initializing Graphics Pipeline...");
+
+
+		logger.GreenLog("Graphics Pipeline Initialized successfully.");
 	}
 
 	void Renderer::InitializeRenderer()
 	{
-		std::cout << "Initializing Renderer..." << std::endl;
+		auto logEnt = registry.view<UNIVERSAL::LogComponent>().front();
+		auto& logger = registry.get<UNIVERSAL::LogComponent>(logEnt);
+
+		InitializeDescriptors();
+		InitializeGraphicsPipeline();
+
+		logger.GreenLog("Renderer Initialized Successfully.");
 	}
-	void Renderer::UpdateRenderer(entt::registry& registry, entt::entity entity) {
-		
+
+	void Renderer::UpdateRenderer(entt::registry& registry) {	
+
 	}
-	void Renderer::ShutdownRenderer(entt::registry& registry, entt::entity entity) {
-		
-		std::cout << "Shutting Down Renderer..." << std::endl;
+
+	void Renderer::ShutdownRenderer(entt::registry& registry, UNIVERSAL::LogComponent& logger) {
+		logger.RedLog("Renderer: Shutting Down Renderer...");
 	}
 
 #pragma region Getters
