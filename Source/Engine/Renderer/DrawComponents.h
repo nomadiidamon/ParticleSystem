@@ -124,12 +124,12 @@ namespace DRAW
 	struct TextureManager {
 		std::vector<VulkanTexture> textures;
 		VulkanTexture CreateTextureFromFile(const std::string& path);
-		VulkanTexture CreateTextureFromMemory(...);
+		VulkanTexture CreateTextureFromMemory();
 	};
 
 	struct BufferManager {
 		std::vector<VulkanBuffer> geometry;
-		VulkanBuffer CreateVertexIndexBuffer();
+		VulkanBuffer CreateVertexIndexBuffer(const VkPhysicalDevice& physicalDevice, const VkDevice& device, VkDeviceSize& vertSize, VkDeviceSize& indexSize);
 		VulkanUniformBuffer CreateUniformBuffers(size_t size, uint32_t count);
 		VulkanInstanceBuffer CreateInstanceBuffer(uint32_t count);
 	};
@@ -139,9 +139,9 @@ namespace DRAW
 		VkDescriptorPool pool = VK_NULL_HANDLE;
 		std::vector<VkDescriptorSet> sets;
 
-		bool CreateLayouts();
-		bool AllocateSets(uint32_t count);
-		bool UpdateSceneUBODescriptors(VulkanUniformBuffer&);
+		bool CreateLayouts(VkDevice& device);
+		bool AllocateSets(VkDevice& device, uint32_t count);
+		bool UpdateSceneUBODescriptors(VkDevice& device, VulkanUniformBuffer& ubo);
 	};
 
 	struct RenderResources {
@@ -153,8 +153,8 @@ namespace DRAW
 		VulkanInstanceBuffer instanceBuffer;
 		VulkanParticleStorage particleStorage;
 
-		bool Initialize(VulkanCoreContext&);
-		void Cleanup();
+		bool Initialize(VulkanCoreContext& core);
+		void Cleanup(VkDevice& device);
 	};
 
 	//==================== PIPELINE SYSTEM ===================//
@@ -184,8 +184,8 @@ namespace DRAW
 		RasterPipeline rasterPipeline;
 		ComputePipeline computePipeline;
 
-		bool CreateRaster(const PipelineConfig&, const VulkanCoreContext&, const DescriptorSystem&);
-		bool CreateCompute(const PipelineConfig&, const VulkanCoreContext&, const DescriptorSystem&);
+		bool CreateRaster(const PipelineConfig& config, VulkanCoreContext& core, const DescriptorSystem& desc);
+		bool CreateCompute(const PipelineConfig& config, VulkanCoreContext& core, const DescriptorSystem& desc);
 		bool ReloadShaders(const std::string& pipelineName);
 		VkShaderModule LoadShaderToRasterPipeline(const char* path, shaderc_shader_kind kind, VulkanCoreContext& core, PipelineSystem& pipeline);
 		VkShaderModule LoadShaderToComputePipeline(const char* path, shaderc_shader_kind kind, VulkanCoreContext& core, PipelineSystem& pipeline);
@@ -220,8 +220,8 @@ namespace DRAW
 		VulkanParticleStorage storage;
 		uint32_t maxParticles = 0;
 
-		bool InitParticles();
-		bool DispatchParticleCompute();
+		bool InitParticles(const VkPhysicalDevice& physicalDevice, const VkDevice& device);
+		bool DispatchParticleCompute(VkCommandBuffer& cmd);
 		bool ResetParticles();
 	};
 
