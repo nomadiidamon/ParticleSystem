@@ -1,8 +1,8 @@
 #pragma once 
 #include "../../../precompiled.h"
-#include "../Renderer/DRAW/DrawComponents.h"
-#include "../../Window.hpp"
-#include "../Renderer/Renderer.h"
+#include "../../../App/Window.hpp"
+#include "../DrawComponents.h"
+#include "../Renderer.h"
 #include "GUI.h"
 
 namespace Engine {

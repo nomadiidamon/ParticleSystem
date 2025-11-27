@@ -2,8 +2,9 @@
 #include "AppData.h"
 #include "Window.hpp"
 #include "../precompiled.h"
-#include "../APP/Engine/Engine.h"
-#include "../APP/Engine/UI/GUI.h"
+#include "../Engine/Engine.h"
+#include "../Engine/Renderer/UI/GUI.h"
+#include "../Utils/IuvoUtils.h"
 
 namespace APP {
 
@@ -16,41 +17,26 @@ namespace APP {
 
 	/// TODO: Add app to registry context
 	class ParticleSystemApp {
-		XTime m_Time;
-		float m_AccumulatedTime = 0.0f;
 		bool m_IsRunning = true;
 		Input m_input;
-		Window m_appWindow;
-		entt::registry* m_registry;
 		AppState m_state;
 		AppUpdateStatus m_updateStatus;
 		AppUpdateStatus m_fixedUpdateStatus;
-
-		/// add to appData?
-		std::string levelPath, modelFolder;
-		std::string vertShader, pixelShader;
-
-
-
-		float m_FixedInterval = 0.02f; // 50 FPS
-		float m_backgroundInterval = 0.1f; // 10 FPS
+		Engine::Engine m_engine;
 
 	public:
-		ParticleSystemApp(std::string appTitle, int xPos, int yPos, int width, int height, GWindowStyle windowMode, entt::registry& _registry);
+		ParticleSystemApp(std::string appTitle, int xPos, int yPos, int width, int height, GWindowStyle windowMode);
 		~ParticleSystemApp();
 		void Run();
-		XTime& GetTime();
 		void GraphicsBehavior(entt::registry& registry);
 		void GameplayBehavior(entt::registry& registry);
 		void MainLoopBehavior(entt::registry& registry);
+		std::string levelPath, modelFolder;
+		std::string vertShader, pixelShader, computeShader;
+		Window m_appWindow;
+		entt::entity appEntity;
 	private:
-		void MainLoopIteration(entt::registry& registry);
-
-		/// TODO: Move to Engine::Engine
-		int Update(entt::registry& registry);
-		/// TODO: Move to Engine::Engine
-		int FixedUpdate(entt::registry& registry);
-
+		DRAW::RendererConfig CreateRendererInitData();
 	};
 
 }

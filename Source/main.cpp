@@ -1,23 +1,18 @@
 #include <iostream>
-#include "APP/Engine/Utils/IuvoUtils.h"
-#include "APP/DefaultApp.h"
+#include "Utils/IuvoUtils.h"
 #include "APP/ParticleSystemApp.h"
 #include "precompiled.h"
-
-static entt::registry registry;
 
 int main()
 {
 	Iuvo::MemoryNet(); // check for memory leaks
 
     CCL::InitializeComponentLogic(registry);
-
-    // 3D Content Creation reference
-	//APP::DefaultApp defaultApp;
     
 	// Particle System Application
-    APP::ParticleSystemApp psApp("Particle System", 50, 50, 1000, 600, GWindowStyle::WINDOWEDBORDERED, registry);
-    psApp.Run();
+    APP::ParticleSystemApp psApp("Particle System", 50, 50, 1000, 600, GWindowStyle::WINDOWEDBORDERED);
+
+    psApp.Run(); // contains the main engine loop
 
 
     // clear all entities and components from the registry

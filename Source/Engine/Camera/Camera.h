@@ -1,5 +1,5 @@
 #pragma once
-#include "../../../precompiled.h"
+#include "../../precompiled.h"
 
 	class Camera {
 	public:

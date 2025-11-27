@@ -1,5 +1,5 @@
 #pragma once
-#include "../../../precompiled.h"
+#include "../precompiled.h"
 
 namespace UNIVERSAL {
 	///*** Tags ***///
@@ -43,6 +43,9 @@ namespace UNIVERSAL {
 		GW::MATH::GVECTORF currentColor;
 	};
 
+	struct LogComponent {
+		std::vector<std::string> logs;
+	};
 
 
 }
