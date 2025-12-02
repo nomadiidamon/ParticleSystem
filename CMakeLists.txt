@@ -15,7 +15,8 @@ file(GLOB_RECURSE SOURCE_FILES CONFIGURE_DEPENDS
     ./Dependencies/gateware-main-25.286.16/Gateware.h
     ./Dependencies/entt-3.13.1/single_include/entt/entt.hpp
     ./Dependencies/json/*.hpp
-	./Dependencies/Imgui/*
+	./Dependencies/Imgui/*.h
+    ./Dependencies/Imgui/*.cpp
 )
 
 add_definitions(-DUNICODE -D_UNICODE)
