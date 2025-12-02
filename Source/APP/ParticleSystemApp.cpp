@@ -82,6 +82,24 @@ namespace APP {
 			m_IsRunning = false;
 		}
 
+
+		// create a window with vulkan surface component for the main display
+		entt::entity vwvsEntity = registry.create();
+		WindowWithVulkanSurface vwvsComp{
+			m_appWindow.x + 75,
+			m_appWindow.y + 250,
+			400,
+			400,
+			m_appWindow.style,
+			m_appWindow.title + " - Vulkan Surface"
+		};
+		registry.emplace<WindowWithVulkanSurface>(vwvsEntity, vwvsComp);
+		auto& vulkanWindowComp = m_registry->get<APP::WindowWithVulkanSurface>(vwvsEntity);
+		if (!vulkanWindowComp.GetWindow()) {
+			std::cerr << "Failed to create WindowWithVulkanSurface!" << std::endl;
+			m_IsRunning = false;
+		}
+
 		m_input.m_input.Create(windowComp);
 		m_input.m_bufferedInput.Create(windowComp);
 		m_input.m_gamepad.Create();
@@ -103,6 +121,14 @@ namespace APP {
 				{ {0.45f, 0.35f, 0.85f, 1} } , { 1.0f, 0u }, 75.f, 0.1f, 100.0f });
 		registry.emplace<DRAW::VulkanRenderer>(imguiWindow);
 
+		// emplace a vulkan initialization for the WindowWithVulkanSurface
+		registry.emplace<DRAW::VulkanRendererInitialization>(vwvsEntity,
+			DRAW::VulkanRendererInitialization{
+				vertShader, pixelShader,
+				{ {0.8f, 0.15f, 0.15f, 1} } , { 1.0f, 0u }, 75.f, 0.1f, 100.0f });
+		registry.emplace<DRAW::VulkanRenderer>(vwvsEntity, vwvsComp.vulkanRenderer);
+		
+
 
 		// TODO : Emplace GPULevel
 		registry.emplace<DRAW::GPULevel>(display);
@@ -118,8 +144,10 @@ namespace APP {
 			});
 		registry.get<DRAW::VulkanRenderer>(display).vlkSurface.Register(shutdown);
 		registry.get<DRAW::VulkanRenderer>(imguiWindow).vlkSurface.Register(shutdown);
+		vwvsComp.GetSurface().Register(shutdown);
 		registry.emplace<GW::CORE::GEventResponder>(display, shutdown.Relinquish());
 		registry.emplace<GW::CORE::GEventResponder>(imguiWindow, shutdown.Relinquish());
+		registry.emplace<GW::CORE::GEventResponder>(vwvsEntity, shutdown.Relinquish());
 	}
 
 	/// Set up gameplay entities and components
@@ -137,6 +165,7 @@ namespace APP {
 		int guiClosedCount = 0; // count of closed ImGui windows
 		auto winView = registry.view<APP::Window>(); // for updating all windows
 		auto winGUIView = registry.view<APP::Window_Vk_ImGui>(); // for updating all ImGui windows
+		auto vwvsView = registry.view<APP::WindowWithVulkanSurface>(); // for updating all WindowWithVulkanSurface
 		do
 		{
 			MainLoopIteration(registry);
@@ -161,6 +190,10 @@ namespace APP {
 					++guiClosedCount;
 				else
 					registry.patch<APP::Window_Vk_ImGui>(entity); // calls on_update()
+			}
+			for (auto entity : vwvsView) {
+				if (!registry.any_of<APP::WindowClosed>(entity))
+					registry.patch<APP::WindowWithVulkanSurface>(entity); // calls on_update()
 			}
 			static int testInt = 0;
 			if (testInt == 150) {

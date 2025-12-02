@@ -1,6 +1,7 @@
 #pragma once
 #include "AppData.h"
 #include "Window.hpp"
+#include "WindowWithVulkanSurface.h"
 #include "../precompiled.h"
 #include "../APP/Engine/Engine.h"
 #include "../APP/Engine/UI/GUI.h"

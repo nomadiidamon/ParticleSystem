@@ -9,7 +9,7 @@ class Renderer
 	Camera camera;
 	// proxy handles
 	GW::SYSTEM::GWindow win;
-	GW::GRAPHICS::GVulkanSurface vlk;
+	GW::GRAPHICS::GVulkanSurface vlk; 
 	VkRenderPass renderPass;
 	GW::CORE::GEventReceiver shutdown;
 	VkDevice device = nullptr;
@@ -253,7 +253,7 @@ private:
 	}
 	void InitializeGraphics()
 	{
-		GetHandlesFromSurface();
+		//GetHandlesFromSurface();
 		InitializeVertexBuffer();
 		InitializeUniformBuffers();
 		InitializeDescriptorPool();
@@ -638,8 +638,8 @@ public:
 		VkCommandBuffer commandBuffer = GetCurrentCommandBuffer();
 		unsigned int currentBuffer = 0;
 		vlk.GetSwapchainCurrentImage(currentBuffer);
-		instanceData.myViewMatrix = camera.FreeLookCamera(win, instanceData.myViewMatrix);
-		//instanceData.myViewMatrix = viewMatrix; // uncomment to disable camera movement
+		//instanceData.myViewMatrix = camera.FreeLookCamera(win, instanceData.myViewMatrix);
+		instanceData.myViewMatrix = viewMatrix; // uncomment to disable camera movement
 		GvkHelper::write_to_buffer(device, uniformBufferData[currentBuffer], &instanceData, sizeof(SHADER_VARS));
 
 		SetUpPipeline(commandBuffer);
